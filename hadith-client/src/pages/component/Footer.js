@@ -69,8 +69,8 @@ export default function Footer() {
             </p>
             <NavLink
               to={to}
-              className={`flex items-center gap-1.5 text-xs font-semibold mt-1 group ${
-                dark ? 'text-isl-green hover:text-isl-dark' : 'text-white/90 hover:text-white'
+              className={`flex items-center gap-1.5 text-xs font-semibold mt-1 group no-underline ${
+                dark ? '!text-isl-green hover:!text-isl-dark' : '!text-white hover:text-gray-200'
               }`}
             >
               {linkText} <FaArrowRight className="text-[9px] group-hover:translate-x-0.5 transition-transform" />
@@ -87,8 +87,8 @@ export default function Footer() {
           <div className="space-y-3">
             <h3 className="text-white font-bold text-xl font-body">Hadith Hub</h3>
             <span className="block font-arabic text-isl-gold text-xl">اَلأَحَادِيثُ النَّبَوِيَّة</span>
-            <p className="text-white/50 text-xs font-body">Qadri Jame Masjid Foundation</p>
-            <p className="text-white/50 text-xs font-body">Parsauni Khas, Gopalganj, Bihar, India</p>
+            <p className="text-gray-400 text-xs font-body">Qadri Jame Masjid Foundation</p>
+            <p className="text-gray-400 text-xs font-body">Parsauni Khas, Gopalganj, Bihar, India</p>
             <p className="text-xs font-body">
               <strong className="text-isl-gold/80">Phone:</strong>{" "}
               <a href="tel:+917319977276" className="text-isl-gold/80 hover:text-isl-gold transition-colors duration-200">
@@ -123,7 +123,7 @@ export default function Footer() {
                 <li key={to}>
                   <NavLink
                     to={to}
-                    className="text-white/55 hover:text-isl-gold text-xs font-body transition-colors duration-200"
+                    className="!text-gray-400 hover:!text-isl-gold text-xs font-body transition-colors duration-200 no-underline"
                   >
                     {label}
                   </NavLink>
@@ -140,7 +140,7 @@ export default function Footer() {
                 <li key={item}>
                   <button
                     type="button"
-                    className="text-white/55 hover:text-isl-gold text-xs font-body transition-colors duration-200 cursor-pointer text-left"
+                    className="!text-gray-400 hover:!text-isl-gold text-xs font-body transition-colors duration-200 cursor-pointer text-left no-underline"
                   >
                     {item}
                   </button>
@@ -156,7 +156,7 @@ export default function Footer() {
               <p className="font-arabic text-isl-gold text-xl text-center leading-loose mb-2">
                 إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ
               </p>
-              <p className="text-xs text-white/45 text-center font-body leading-relaxed">
+              <p className="text-xs text-gray-400 text-center font-body leading-relaxed">
                 "Actions are judged by intentions."<br />
                 <em>— Sahih al-Bukhari</em>
               </p>
@@ -168,11 +168,11 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="max-w-6xl mx-auto px-6 py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2">
-        <span className="text-white/45 text-xs font-body">
+        <span className="text-gray-400 text-xs font-body">
           © {new Date().getFullYear()}{" "}
           <strong className="text-isl-gold/80">Hadith Hub</strong>. All Rights Reserved.
         </span>
-        <span className="flex items-center gap-1.5 text-white/45 text-xs font-body">
+        <span className="flex items-center gap-1.5 text-gray-400 text-xs font-body">
           Made with <FaHeart className="text-isl-gold text-xs" /> by Arman Ali
         </span>
       </div>
