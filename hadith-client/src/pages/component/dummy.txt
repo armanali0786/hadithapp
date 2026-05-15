@@ -1,0 +1,276 @@
+Navbar
+https://gtaf.org/
+export default function Widget() {
+    return (
+        <nav className="bg-white shadow-md p-4">
+          <div className="container mx-auto flex justify-between items-center">
+            <div className="flex items-center">
+              <img src="https://openui.fly.dev/openui/24x24.svg?text=🌱" alt="Greentech Apps Foundation Logo" className="h-8 mr-2" />
+              <span className="text-green-600 font-bold text-xl">Greentech Apps Foundation</span>
+            </div>
+            <div className="hidden md:flex space-x-4">
+              <a href="#" className="text-zinc-700 hover:text-zinc-900">Home</a>
+              <a href="#" className="text-zinc-700 hover:text-zinc-900">Our Apps</a>
+              <a href="#" className="text-zinc-700 hover:text-zinc-900">Blog</a>
+              <div className="relative">
+                <button className="text-zinc-700 hover:text-zinc-900">Organization</button>
+                <div className="absolute hidden mt-2 bg-white shadow-lg rounded-md">
+                  <a href="#" className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100">Sub-item 1</a>
+                  <a href="#" className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100">Sub-item 2</a>
+                </div>
+              </div>
+              <div className="relative">
+                <button className="text-zinc-700 hover:text-zinc-900">Help & Support</button>
+                <div className="absolute hidden mt-2 bg-white shadow-lg rounded-md">
+                  <a href="#" className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100">FAQ</a>
+                  <a href="#" className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100">Contact Us</a>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <input type="text" placeholder="Search" className="border rounded-md p-2" />
+              <button className="bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md p-2">Donate</button>
+            </div>
+          </div>
+        </nav>
+        
+        <script>
+          // Dropdown functionality
+          document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+              const dropdown = button.nextElementSibling;
+              dropdown.classList.toggle('hidden');
+            });
+          });
+        
+          // Close dropdowns when clicking outside
+          document.addEventListener('click', (event) => {
+            if (!event.target.closest('button')) {
+              document.querySelectorAll('.absolute').forEach(dropdown => {
+                dropdown.classList.add('hidden');
+              });
+            }
+          });
+        </script>
+        
+    )
+}
+
+
+export default function Widget() {
+    return (
+        <div className="container mx-auto p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-bold">10+ Islamic apps</h2>
+              <p className="text-muted-foreground">Bringing people closer to Allah</p>
+              <a href="#" className="text-primary hover:underline">Check out all apps &gt;</a>
+            </div>
+            <div className="bg-green-500 rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-bold text-primary-foreground">Sadaqah Jariyah</h2>
+              <p className="text-primary-foreground">Help Us Reach Muslims Worldwide</p>
+              <a href="#" className="text-primary-foreground hover:underline">Donate &gt;</a>
+            </div>
+            <div className="bg-orange-500 rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-bold text-primary-foreground">Volunteer</h2>
+              <p className="text-primary-foreground">Got Skills & Want To Use For The Ummah?</p>
+              <a href="#" className="text-primary-foreground hover:underline">Get Involved &gt;</a>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-xl font-bold">What's New?</h2>
+              <p className="text-muted-foreground">Beautiful Quran Quotes About Life</p>
+              <a href="#" className="text-primary hover:underline">Check out &gt;</a>
+            </div>
+          </div>
+          <div className="mt-8 text-center">
+            <p className="text-muted-foreground">To Be a Part of this Sadaqa Jundefinedh,</p>
+            <a href="#" className="bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded-lg">Donate Now</a>
+          </div>
+        </div>
+        
+    )
+}
+
+
+
+
+export default function Widget() {
+    return (
+        <section className="p-6 bg-background">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-primary text-primary-foreground p-4 rounded-lg shadow-md">
+              <h2 className="text-xl font-bold">10+ Islamic apps</h2>
+              <p>Bringing people closer to Allah</p>
+              <a href="#" className="text-accent hover:underline">Check out all apps &gt;</a>
+            </div>
+            <div className="bg-green-500 text-white p-4 rounded-lg shadow-md">
+              <h2 className="text-xl font-bold">Sadaqah Jariyah</h2>
+              <p>Help Us Reach Muslims Worldwide</p>
+              <a href="#" className="text-accent hover:underline">Donate &gt;</a>
+            </div>
+            <div className="bg-orange-500 text-white p-4 rounded-lg shadow-md">
+              <h2 className="text-xl font-bold">Volunteer</h2>
+              <p>Got Skills & Want To Use For The Ummah?</p>
+              <a href="#" className="text-accent hover:underline">Get Involved &gt;</a>
+            </div>
+            <div className="bg-zinc-200 text-zinc-800 p-4 rounded-lg shadow-md">
+              <h2 className="text-xl font-bold">What's New?</h2>
+              <p>Beautiful Quran Quotes About Life</p>
+              <a href="#" className="text-accent hover:underline">Check out &gt;</a>
+            </div>
+          </div>
+          <div className="mt-6 text-center text-muted-foreground">
+            <p>To Be a Part of this Sadaqa Jundefinedh, <a href="#" className="text-accent hover:underline">Donate Now</a></p>
+          </div>
+        </section>
+    )
+}
+
+
+
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+		<script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+		<script type="text/javascript">
+			window.tailwind.config = {
+				darkMode: ['class'],
+				theme: {
+					extend: {
+						colors: {
+							border: 'hsl(var(--border))',
+							input: 'hsl(var(--input))',
+							ring: 'hsl(var(--ring))',
+							background: 'hsl(var(--background))',
+							foreground: 'hsl(var(--foreground))',
+							primary: {
+								DEFAULT: 'hsl(var(--primary))',
+								foreground: 'hsl(var(--primary-foreground))'
+							},
+							secondary: {
+								DEFAULT: 'hsl(var(--secondary))',
+								foreground: 'hsl(var(--secondary-foreground))'
+							},
+							destructive: {
+								DEFAULT: 'hsl(var(--destructive))',
+								foreground: 'hsl(var(--destructive-foreground))'
+							},
+							muted: {
+								DEFAULT: 'hsl(var(--muted))',
+								foreground: 'hsl(var(--muted-foreground))'
+							},
+							accent: {
+								DEFAULT: 'hsl(var(--accent))',
+								foreground: 'hsl(var(--accent-foreground))'
+							},
+							popover: {
+								DEFAULT: 'hsl(var(--popover))',
+								foreground: 'hsl(var(--popover-foreground))'
+							},
+							card: {
+								DEFAULT: 'hsl(var(--card))',
+								foreground: 'hsl(var(--card-foreground))'
+							},
+						},
+					}
+				}
+			}
+		</script>
+		<style type="text/tailwindcss">
+			@layer base {
+				:root {
+					--background: 0 0% 100%;
+--foreground: 240 10% 3.9%;
+--card: 0 0% 100%;
+--card-foreground: 240 10% 3.9%;
+--popover: 0 0% 100%;
+--popover-foreground: 240 10% 3.9%;
+--primary: 240 5.9% 10%;
+--primary-foreground: 0 0% 98%;
+--secondary: 240 4.8% 95.9%;
+--secondary-foreground: 240 5.9% 10%;
+--muted: 240 4.8% 95.9%;
+--muted-foreground: 240 3.8% 46.1%;
+--accent: 240 4.8% 95.9%;
+--accent-foreground: 240 5.9% 10%;
+--destructive: 0 84.2% 60.2%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 5.9% 90%;
+--input: 240 5.9% 90%;
+--ring: 240 5.9% 10%;
+--radius: 0.5rem;
+				}
+				.dark {
+					--background: 240 10% 3.9%;
+--foreground: 0 0% 98%;
+--card: 240 10% 3.9%;
+--card-foreground: 0 0% 98%;
+--popover: 240 10% 3.9%;
+--popover-foreground: 0 0% 98%;
+--primary: 0 0% 98%;
+--primary-foreground: 240 5.9% 10%;
+--secondary: 240 3.7% 15.9%;
+--secondary-foreground: 0 0% 98%;
+--muted: 240 3.7% 15.9%;
+--muted-foreground: 240 5% 64.9%;
+--accent: 240 3.7% 15.9%;
+--accent-foreground: 0 0% 98%;
+--destructive: 0 62.8% 30.6%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 3.7% 15.9%;
+--input: 240 3.7% 15.9%;
+--ring: 240 4.9% 83.9%;
+				}
+			}
+		</style>
+  </head>
+  <body>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+  <div class="bg-card rounded-lg shadow-lg overflow-hidden">
+    <img src="https://placehold.co/400x200" alt="Beautiful Quran Quotes About Life" class="w-full h-32 object-cover" />
+    <div class="p-4">
+      <h3 class="text-lg font-semibold">Beautiful Quran Quotes About Life</h3>
+      <p class="text-muted-foreground">August 7th, 2024</p>
+    </div>
+  </div>
+  <div class="bg-card rounded-lg shadow-lg overflow-hidden">
+    <img src="https://placehold.co/400x200" alt="How to Recite Quran Beautifully" class="w-full h-32 object-cover" />
+    <div class="p-4">
+      <h3 class="text-lg font-semibold">How to Recite Quran Beautifully with Tajweed: 7 Effective Tips</h3>
+      <p class="text-muted-foreground">June 26th, 2024</p>
+    </div>
+  </div>
+  <div class="bg-card rounded-lg shadow-lg overflow-hidden">
+    <img src="https://placehold.co/400x200" alt="Manners of Reading Quran" class="w-full h-32 object-cover" />
+    <div class="p-4">
+      <h3 class="text-lg font-semibold">12 Must-Know Etiquettes & Manners of Reading the Quran</h3>
+      <p class="text-muted-foreground">June 26th, 2024</p>
+    </div>
+  </div>
+  <div class="bg-card rounded-lg shadow-lg overflow-hidden">
+    <img src="https://placehold.co/400x200" alt="Testimonials About Our Apps" class="w-full h-32 object-cover" />
+    <div class="p-4">
+      <h3 class="text-lg font-semibold">Discover 70 Inspiring User Testimonials for Our Apps!</h3>
+      <p class="text-muted-foreground">June 9th, 2024</p>
+    </div>
+  </div>
+  <div class="bg-card rounded-lg shadow-lg overflow-hidden">
+    <img src="https://placehold.co/400x200" alt="Dua For Qurbani And Eid Al Adha" class="w-full h-32 object-cover" />
+    <div class="p-4">
+      <h3 class="text-lg font-semibold">A List of Important Dua for Qurbani and Eid Al Adha</h3>
+      <p class="text-muted-foreground">May 23rd, 2024</p>
+    </div>
+  </div>
+  <div class="bg-card rounded-lg shadow-lg overflow-hidden">
+    <img src="https://placehold.co/400x200" alt="Dua For Hajj" class="w-full h-32 object-cover" />
+    <div class="p-4">
+      <h3 class="text-lg font-semibold">12 Essential Dua for Hajj Every Pilgrim Should Know</h3>
+      <p class="text-muted-foreground">May 18th, 2024</p>
+    </div>
+  </div>
+</div>
+  </body>
+</html>

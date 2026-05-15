@@ -1,0 +1,159 @@
+/* --- Variables for easy color/font adjustments --- */
+:root {
+  --primary-font: 'Arial', sans-serif; /* Use your desired primary font */
+  --secondary-font: 'Georgia', serif; /* Used for the script font */
+  --text-color: #333;
+  --header-bg-color: #f8f8f8;
+  --table-border-color: #ddd;
+  --table-header-bg: #f2f2f2;
+  --gold-color: #b8860b; /* For a touch of gold/yellow */
+}
+
+/* --- General Page Structure --- */
+.donor-page-container {
+  max-width: 100%;
+  margin: 0 auto;
+  font-family: var(--primary-font);
+  color: var(--text-color);
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Header Banner --- */
+.header-banner {
+  background-color: var(--header-bg-color);
+  background-image: url('https://images.pexels.com/photos/337904/pexels-photo-337904.jpeg'); /* Replace with your actual image URL */
+  background-size: cover;
+  background-position: center;
+  height: 150px; /* Adjust height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-text {
+  color: #fff; /* Text color for the banner */
+  font-size: 2em;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+/* --- Main Content Layout --- */
+.main-content {
+  padding: 30px;
+}
+
+.section-title {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--table-border-color);
+  padding-bottom: 5px;
+  color: #555;
+  font-weight: normal;
+}
+
+.donor-list-layout {
+  display: flex;
+  gap: 40px;
+}
+
+/* --- Thank You Message Section --- */
+.thank-you-message {
+  flex: 1; /* Takes up 1 part of the space */
+  max-width: 40%; /* Adjust based on preferred layout */
+  padding-right: 20px;
+}
+
+.thank-you-script {
+  font-family: var(--secondary-font);
+  font-size: 3em;
+  color: #555;
+  margin-top: 0;
+  margin-bottom: 15px;
+  /* Add styling to mimic the decorative swirl if not using an image */
+}
+
+.message-body {
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+/* --- Donor Table Section --- */
+.donor-table-wrapper {
+  flex: 2; /* Takes up 2 parts of the space */
+  max-width: 60%; /* Adjust based on preferred layout */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+th, td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--table-border-color);
+}
+
+th {
+  background-color: var(--table-header-bg);
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #555;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+.last-updated {
+  font-size: 0.8em;
+  color: #777;
+  margin-top: 15px;
+  text-align: right;
+}
+
+/* --- Footer --- */
+.footer-section {
+  padding: 20px 30px;
+  text-align: center;
+  border-top: 1px solid var(--table-border-color);
+  background-color: #f8f8f8;
+}
+
+.social-icons span {
+  font-size: 1.2em;
+  margin: 0 5px;
+  color: #888;
+  cursor: pointer;
+}
+
+.copyright {
+  font-size: 0.75em;
+  color: #777;
+  margin-top: 10px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .donor-list-layout {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .thank-you-message,
+  .donor-table-wrapper {
+    max-width: 100%;
+    padding-right: 0;
+  }
+}
