@@ -1,142 +1,182 @@
-import Button from "../../components/Button";
 import React from "react";
 import {
-  FaTwitter,
-  FaFacebook,
-  FaInstagram,
-  FaSkype,
-  FaLinkedin,
+  FaTwitter, FaFacebook, FaInstagram, FaYoutube,
+  FaHeart, FaBookOpen, FaHandHoldingHeart, FaUsers,
+  FaQuestionCircle, FaArrowRight,
 } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+
+const bannerCells = [
+  {
+    Icon: FaBookOpen,
+    title: "10+ Islamic Resources",
+    desc: "Bringing people closer to Allah through authentic knowledge",
+    to: "/hadith-list",
+    linkText: "Explore Hadith",
+    bg: "bg-isl-green",
+  },
+  {
+    Icon: FaHandHoldingHeart,
+    title: "Sadaqah Jariyah",
+    desc: "Help us reach Muslims worldwide with the light of knowledge",
+    to: "/donation",
+    linkText: "Donate Now",
+    bg: "bg-isl-gold",
+    dark: true,
+  },
+  {
+    Icon: FaUsers,
+    title: "Volunteer for the Ummah",
+    desc: "Got skills? Use them for the sake of Allah and the community",
+    to: "#",
+    linkText: "Get Involved",
+    bg: "bg-amber-800",
+  },
+  {
+    Icon: FaQuestionCircle,
+    title: "Hadith Quiz",
+    desc: "Test your knowledge of the Prophet's ﷺ teachings",
+    to: "/quiz",
+    linkText: "Take the Quiz",
+    bg: "bg-isl-dark",
+  },
+];
+
+const quickLinks = [
+  { to: '/', label: 'Home' },
+  { to: '/hadith-list', label: 'Blogs' },
+  { to: '/quiz', label: 'Hadith Quiz' },
+  { to: '/donation', label: 'Donate' },
+  { to: '/donation-list', label: 'Donor List' },
+];
+
+const resources = ['About Us', 'Volunteer', 'Contact Us', 'Help & Support', 'Privacy Policy'];
+
 export default function Footer() {
   return (
-    <>
-      <footer id="footer" className="">
-          <section className="bg-background">
-            <div className="grid grid-cols-1 md:grid-cols-2 ">
-              <div className="bg-gray-200 text-primary-foreground p-20 shadow-md">
-                <h2 className="text-xl font-bold">10+ Islamic apps</h2>
-                <p>Bringing people closer to Allah</p>
-                <a href="#" className="text-accent hover:underline">
-                  Check out all apps &gt;
-                </a>
-              </div>
-              <div className="bg-[#009153] text-white p-20 shadow-md">
-                <h2 className="text-xl text-blue-800 font-bold">Sadaqah Jariyah</h2>
-                <p className="text-white">Help Us Reach Muslims Worldwide</p>
-                <a href="#" className="text-accent hover:underline">
-                  Donate &gt;
-                </a>
-              </div>
-              <div className="bg-[#55433b] text-white p-20 shadow-md">
-                <h2 className="text-xl text-blue-500 font-bold">Volunteer</h2>
-                <p className="text-white">Got Skills & Want To Use For The Ummah?</p>
-                <a href="#" className="text-accent hover:underline">
-                  Get Involved &gt;
-                </a>
-              </div>
-              <div className="bg-zinc-200 text-zinc-800 p-20 shadow-md">
-                <h2 className="text-xl font-bold">What's New?</h2>
-                <p>Beautiful Quran Quotes About Life</p>
-                <a href="#" className="text-accent hover:underline">
-                  Check out &gt;
-                </a>
-              </div>
-            </div>
-          </section>
+    <footer className="bg-isl-dark">
 
-        <div className="bg-[#383e42] footer-top">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-3 col-md-6 footer-contact">
-                <h5 className="text-2xl font-bold">QADRI JAME MASJID FOUNDATION</h5>
-                <p>
-                  Parsauni Khas, Gopalganj, Bihar
-                  <br />
-                  India <br />
-                  <br />
-                  <strong>Phone:</strong> +91 731 9977 276
-                  <br />
-                  <strong>Email:</strong> armanali.shaikh77@gmail.com
-                  <br />
-                </p>
-              </div>
+      {/* Top 2×2 Banner Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4">
+        {bannerCells.map(({ Icon, title, desc, to, linkText, bg, dark }) => (
+          <div key={title} className={`${bg} p-6 flex flex-col items-start gap-3`}>
+            <Icon className={`text-2xl ${dark ? 'text-isl-green' : 'text-white/90'}`} />
+            <h2 className={`font-bold text-sm leading-tight font-body ${dark ? 'text-isl-green' : 'text-white'}`}>
+              {title}
+            </h2>
+            <p className={`text-xs font-body leading-relaxed flex-1 ${dark ? 'text-isl-green/80' : 'text-white/70'}`}>
+              {desc}
+            </p>
+            <NavLink
+              to={to}
+              className={`flex items-center gap-1.5 text-xs font-semibold mt-1 group ${
+                dark ? 'text-isl-green hover:text-isl-dark' : 'text-white/90 hover:text-white'
+              }`}
+            >
+              {linkText} <FaArrowRight className="text-[9px] group-hover:translate-x-0.5 transition-transform" />
+            </NavLink>
+          </div>
+        ))}
+      </div>
 
-              <div className="col-lg-3 col-md-6 footer-links">
-                <h4>Useful Resources</h4>
-                <ul>
-                  <li>
-                    <i className="bx bx-chevron-right"></i> <a href="#">Home</a>
-                  </li>
-                  <li>
-                    <i className="bx bx-chevron-right"></i>{" "}
-                    <a href="#">About us</a>
-                  </li>
-                  <li>
-                    <i className="bx bx-chevron-right"></i>{" "}
-                    <a href="#">Blogs</a>
-                  </li>
-                  <li>
-                    <i className="bx bx-chevron-right"></i>{" "}
-                    <a href="#">Help & Support</a>
-                  </li>
-                  <li>
-                    <i className="bx bx-chevron-right"></i>{" "}
-                    <a href="#">Privacy policy</a>
-                  </li>
-                </ul>
-              </div>
+      {/* Main Footer Grid */}
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
-              <div className="col-lg-3 col-md-6 footer-links">
-                <h4>Our Services</h4>
-                <ul>
-                  <li>
-                    <i className="bx bx-chevron-right"></i>{" "}
-                    <a href="#">Volunteer</a>
-                  </li>
-                  <li>
-                    <i className="bx bx-chevron-right"></i>{" "}
-                    <a href="#">Contact us</a>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="col-lg-3 col-md-6 footer-links">
-                <h4>Our Social Networks</h4>
-                <div className="social-links">
-                  <a href="#" className="tsocial-linkswitter">
-                    <FaTwitter className="ml-2" />
-                  </a>
-                  <a href="#" className="facebook">
-                    <FaFacebook className="ml-2" />
-                  </a>
-                  <a href="#" className="instagram">
-                    <FaInstagram className="ml-2" />
-                  </a>
-                  <a href="#" className="google-plus">
-                    <FaSkype className="ml-2" />
-                  </a>
-                  <a href="#" className="linkedin">
-                    <FaLinkedin className="ml-2" />
-                  </a>
-                </div>
-              </div>
+          {/* Brand */}
+          <div className="space-y-3">
+            <h3 className="text-white font-bold text-xl font-body">Hadith Hub</h3>
+            <span className="block font-arabic text-isl-gold text-xl">اَلأَحَادِيثُ النَّبَوِيَّة</span>
+            <p className="text-white/50 text-xs font-body">Qadri Jame Masjid Foundation</p>
+            <p className="text-white/50 text-xs font-body">Parsauni Khas, Gopalganj, Bihar, India</p>
+            <p className="text-xs font-body">
+              <strong className="text-isl-gold/80">Phone:</strong>{" "}
+              <a href="tel:+917319977276" className="text-isl-gold/80 hover:text-isl-gold transition-colors duration-200">
+                +91 731 9977 276
+              </a>
+            </p>
+            <p className="text-xs font-body">
+              <strong className="text-isl-gold/80">Email:</strong>{" "}
+              <a href="mailto:armanali.shaikh77@gmail.com" className="text-isl-gold/80 hover:text-isl-gold transition-colors duration-200">
+                armanali.shaikh77@gmail.com
+              </a>
+            </p>
+            {/* Social Icons */}
+            <div className="flex gap-2.5 pt-1">
+              {[FaTwitter, FaFacebook, FaInstagram, FaYoutube].map((Icon, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className="w-8 h-8 rounded-full border border-isl-gold/30 flex items-center justify-center text-isl-gold/60 hover:bg-isl-gold hover:text-isl-dark hover:border-isl-gold transition-all duration-200 cursor-pointer"
+                >
+                  <Icon className="text-xs" />
+                </button>
+              ))}
             </div>
           </div>
-        </div>
 
-        <div className="container footer-bottom clearfix">
-          <div className="copyright">
-            &copy; Copyright{" "}
-            <strong>
-              <span>Hadith</span>
-            </strong>
-            . All Rights Reserved
+          {/* Quick Links */}
+          <div className="space-y-3">
+            <h4 className="text-white font-semibold text-sm tracking-wider font-body uppercase">Quick Links</h4>
+            <ul className="space-y-2">
+              {quickLinks.map(({ to, label }) => (
+                <li key={to}>
+                  <NavLink
+                    to={to}
+                    className="text-white/55 hover:text-isl-gold text-xs font-body transition-colors duration-200"
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="credits">
-            Designed by  Arman Ali
+
+          {/* Resources */}
+          <div className="space-y-3">
+            <h4 className="text-white font-semibold text-sm tracking-wider font-body uppercase">Resources</h4>
+            <ul className="space-y-2">
+              {resources.map((item) => (
+                <li key={item}>
+                  <button
+                    type="button"
+                    className="text-white/55 hover:text-isl-gold text-xs font-body transition-colors duration-200 cursor-pointer text-left"
+                  >
+                    {item}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
+
+          {/* Daily Reminder */}
+          <div className="space-y-3">
+            <h4 className="text-white font-semibold text-sm tracking-wider font-body uppercase">Daily Reminder</h4>
+            <div className="bg-isl-gold/10 border border-isl-gold/20 rounded-xl p-4">
+              <p className="font-arabic text-isl-gold text-xl text-center leading-loose mb-2">
+                إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ
+              </p>
+              <p className="text-xs text-white/45 text-center font-body leading-relaxed">
+                "Actions are judged by intentions."<br />
+                <em>— Sahih al-Bukhari</em>
+              </p>
+            </div>
+          </div>
+
         </div>
-      </footer>
-    </>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="max-w-6xl mx-auto px-6 py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span className="text-white/45 text-xs font-body">
+          © {new Date().getFullYear()}{" "}
+          <strong className="text-isl-gold/80">Hadith Hub</strong>. All Rights Reserved.
+        </span>
+        <span className="flex items-center gap-1.5 text-white/45 text-xs font-body">
+          Made with <FaHeart className="text-isl-gold text-xs" /> by Arman Ali
+        </span>
+      </div>
+
+    </footer>
   );
 }

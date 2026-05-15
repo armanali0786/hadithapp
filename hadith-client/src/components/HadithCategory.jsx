@@ -1,25 +1,34 @@
 import React from "react";
-import { FaArrowRight } from "react-icons/fa";
 
 export default function HadithCategory({ types, selected, onSelect }) {
   return (
-    <div className="md:w-1/4 mr-5">
+    <div className="bg-isl-green rounded-2xl overflow-hidden shadow-lg">
+      {/* Header */}
+      <div className="px-5 py-4 bg-isl-green-light border-b border-white/10">
+        <h3 className="text-isl-gold font-bold text-sm tracking-widest text-center font-body">
+          ✦ Collections ✦
+        </h3>
+      </div>
+
       {types.length === 0 ? (
-        <p>No Hadith types available</p>
+        <p className="p-4 text-white/50 text-sm font-body">No collections available</p>
       ) : (
-        types.map((type, index) => (
-          <ul key={type._id}>
+        <ul>
+          {types.map((type, index) => (
             <li
-              className={`text-black p-2 flex justify-between items-center rounded-sm cursor-pointer ${
-                selected === index ? "bg-slate-500 text-white" : ""
-              }`}
+              key={type._id}
               onClick={() => onSelect(index)}
+              className={`flex items-center justify-between px-5 py-3.5 cursor-pointer transition-all duration-200 border-l-4 text-sm font-body ${
+                selected === index
+                  ? 'border-l-isl-gold bg-white/10 text-isl-gold font-semibold'
+                  : 'border-l-transparent text-white/80 hover:bg-white/10 hover:text-white hover:border-l-white/30'
+              }`}
             >
-              {type.hadithtype}
-              <span><FaArrowRight /></span>
+              <span>{type.hadithtype}</span>
+              <span className="text-xl leading-none opacity-60">›</span>
             </li>
-          </ul>
-        ))
+          ))}
+        </ul>
       )}
     </div>
   );

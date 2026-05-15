@@ -1,5 +1,4 @@
 import React from 'react'
-import '../assets/css/navbar.scss'
 export default function Navigation() {
     return (
         <header class="header" id="header">

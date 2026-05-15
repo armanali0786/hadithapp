@@ -1,6 +1,5 @@
 import React from 'react'
 import CourseItems from '../data/courseItems';
-import '../assets/css/course_items.css'
 export default function CourseItemList() {
     return (
         <div>

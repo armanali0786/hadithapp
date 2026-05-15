@@ -1,6 +1,4 @@
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/scss/bootstrap.scss';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './Dashboard';
@@ -23,20 +21,16 @@ function App() {
         <Navbar />
       </div>
       <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/" element={<Dashboard />} />
-        {/* <Route path="/notes" element={<NotesApp />} /> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/quiz" element={<DynamicQuiz />} />
-        <Route path="/hadith-list" element={<HadithList/>} />
-        <Route path="/hadith-details" element={<HadithDetails/>} />
-        <Route path="/slider" element={<HadithSlider/>} />
-        <Route path="/test" element={<HadithTest/>} />
-        <Route path="/donation" element={<SadaqahPage/>} />
-        <Route path="/donation-list" element={<DonorListPage/>} />
-
-        
-        {/* <Route path="/learning" element={<Store />} /> */}
+        <Route path="/hadith-list" element={<HadithList />} />
+        <Route path="/hadith-details" element={<HadithDetails />} />
+        <Route path="/slider" element={<HadithSlider />} />
+        <Route path="/test" element={<HadithTest />} />
+        <Route path="/donation" element={<SadaqahPage />} />
+        <Route path="/donation-list" element={<DonorListPage />} />
       </Routes>
     </div>
   );

@@ -1,5 +1,4 @@
 import React from 'react'
-import '../assets/css/start_button.css';
 export default function StartButton() {
     return (
         <>

@@ -13,18 +13,26 @@ export default function HadithCollections() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <HadithCategory types={hadithTypes} selected={selectedItem} onSelect={handleSelectCategory} />
+    <div className="flex flex-col md:flex-row gap-6">
+      {/* Category Sidebar */}
+      <div className="w-full md:w-52 flex-shrink-0">
+        <HadithCategory
+          types={hadithTypes}
+          selected={selectedItem}
+          onSelect={handleSelectCategory}
+        />
+      </div>
 
-      <div className="md:w-3/4 ml-10">
+      {/* Cards Grid */}
+      <div className="flex-1 min-w-0">
         {loading ? (
-          <div className="flex justify-center items-center py-10">
-            <div className="w-10 h-10 border-4 border-gray-300 border-t-indigo-600 rounded-full animate-spin"></div>
+          <div className="flex justify-center py-10">
+            <div className="w-10 h-10 border-4 border-isl-gold border-t-transparent rounded-full animate-spin" />
           </div>
         ) : error ? (
-          <div className="text-red-500 text-center">{error}</div>
+          <div className="text-red-500 text-center py-5 font-body">{error}</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {hadithList.map((hadith) => (
               <HadithCard key={hadith._id} hadith={hadith} onClick={() => {}} />
             ))}

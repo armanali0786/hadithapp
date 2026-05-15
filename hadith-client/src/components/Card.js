@@ -1,5 +1,4 @@
 import React from 'react'
-import '../assets/css/card.css'
 export default function Card() {
     return (
         <>

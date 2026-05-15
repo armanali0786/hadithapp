@@ -1,52 +1,42 @@
-import React, { useState } from "react";
-import "./assets/styles/style.css";
-// import CourseItemList from './pages/CourseItemList';
-// import Store from './pages/Store';
+import React from "react";
 import Footer from "./pages/component/Footer";
-// import Pricing from './pages/component/Pricing';
-// import Category from './pages/component/Category';
-
-import Testimonial from "./pages/component/Testimonial";
 import HadithSlider from "./pages/HadithSlider";
 import HadithCollections from "./pages/HadithCollections";
-import AboutSection from "./pages/AboutSection";
-import HadithItem from "./components/HadithItem";
-
 
 export default function Dashboard() {
-
   return (
     <>
-      <section className="section-bg">
+      {/* Hero Slider */}
+      <section>
         <HadithSlider />
       </section>
-      <section className="about section-bg pt-5">
-        <div className="" data-aos="fade-up">
-          <div className="section-title">
-            <h2>Ultimate COllection of Hadith</h2>
+
+      {/* Hadith Collections */}
+      <section className="bg-isl-cream py-14">
+        <div className="max-w-6xl mx-auto px-4">
+
+          {/* Section Header */}
+          <div className="text-center mb-10">
+            <span className="block font-arabic text-isl-gold text-2xl mb-1">
+              اَلأَحَادِيثُ النَّبَوِيَّة
+            </span>
+            <h2 className="font-body text-2xl md:text-3xl font-bold text-isl-green">
+              Ultimate Collection of Hadith
+            </h2>
+            <div className="flex items-center justify-center gap-3 mt-3 mb-3">
+              <div className="h-px bg-isl-gold/40 w-16"></div>
+              <span className="text-isl-gold text-xs">✦</span>
+              <div className="h-px bg-isl-gold/40 w-16"></div>
+            </div>
+            <p className="text-gray-500 text-sm font-body max-w-xl mx-auto">
+              Authentic narrations from the Prophet Muhammad ﷺ — browse by collection
+            </p>
           </div>
-          <div className="p-5">
-            <HadithCollections />
-          </div>
+
+          <HadithCollections />
         </div>
       </section>
 
-      {/* <div className="max-w-xl mx-auto grid gap-4">
-        {hadithListData.map((hadith) => (
-          <HadithItem
-            key={hadith.id}
-            hadith={hadith}
-            onClick={() => setSelectedHadith(hadith)}
-          />
-        ))}
-      </div> */}
-
-      {/* <section className="container bg-white py-5">
-          <Testimonial />
-      </section> */}
-      {/* <section className="container bg-white py-5">
-        <AboutSection />
-      </section> */}
       <Footer />
     </>
   );
