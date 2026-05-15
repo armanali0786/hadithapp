@@ -4,7 +4,8 @@ import axios from "axios";
 export default function useHadiths() {
   const [hadithTypes, setHadithTypes] = useState([]);
   const [hadithList, setHadithList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);       // initial page load
+  const [filtering, setFiltering] = useState(false);  // category switch
   const [error, setError] = useState(null);
 
   const fetchHadithTypes = async () => {
@@ -19,13 +20,22 @@ export default function useHadiths() {
   };
 
   const fetchHadithsByType = async (typeId) => {
-    if (typeId === "all") {
-      return fetchAllHadiths();
+    setFiltering(true);
+    try {
+      if (typeId === "all") {
+        await fetchAllHadiths();
+      } else {
+        const response = await axios.get(
+          `http://localhost:4040/hadith-list/filter?hadithTypeId=${typeId}`
+        );
+        setHadithList(response.data.data.hadithList);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load Hadiths for this category.");
+    } finally {
+      setFiltering(false);
     }
-    const response = await axios.get(
-      `http://localhost:4040/hadith-list/filter?hadithTypeId=${typeId}`
-    );
-    setHadithList(response.data.data.hadithList);
   };
 
   const loadInitialData = async () => {
@@ -49,7 +59,8 @@ export default function useHadiths() {
     hadithTypes,
     hadithList,
     loading,
+    filtering,
     error,
-    fetchHadithsByType
+    fetchHadithsByType,
   };
 }

@@ -1,9 +1,29 @@
 import HadithDetailsCard from "../components/HadithDetailsCard";
 import { FaBookmark, FaStar, FaMoon, FaCheckCircle } from 'react-icons/fa';
+import SEO from '../components/SEO';
+
+const DETAILS_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Ultimate Collection of Hadith — Ramadan Planner",
+    "description": "Authentic Hadith guidance for Ramadan planning including Salah, Dhikr, Quran tracker, Laylatul Qadr preparation and Eid-ul-Fitr.",
+    "author": { "@type": "Organization", "name": "IlmHadith" },
+    "publisher": { "@type": "Organization", "name": "IlmHadith", "url": "https://ilmhadith.com" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://ilmhadith.com/hadith-details" }
+  }
+];
 
 export default function HadithDetails() {
   return (
     <div className="section-bg min-h-screen py-12 px-4 relative overflow-hidden">
+      <SEO
+        title="Ultimate Collection of Hadith"
+        description="Explore the ultimate Hadith collection with Ramadan planner, Salah checklist, Dhikr tracker, Quran progress, Laylatul Qadr guide and more from IlmHadith."
+        keywords="hadith collection, Ramadan planner, salah checklist, dhikr, Quran tracker, Laylatul Qadr, eid preparation"
+        path="/hadith-details"
+        schema={DETAILS_SCHEMA}
+      />
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-isl-gold/5 rounded-full blur-3xl -z-10"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-isl-green/5 rounded-full blur-3xl -z-10"></div>

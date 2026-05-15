@@ -3,15 +3,21 @@ const router = express.Router()
 const questions = require('./questions')
 const hadithtypes = require('./hadithType')
 const cardlists = require('./cardList')
-
 const hadithlist = require('./hadithList')
+const slider = require('./slider')
+const auth = require('./auth')
+const quizSet = require('./quizSet')
+const quizResult = require('./quizResult')
+const organization = require('./organization')
 
 router.use('/questions', questions)
-
-router.use('/hadith-type', hadithtypes);
-
+router.use('/hadith-type', hadithtypes)
 router.use('/cardlists', cardlists)
-
 router.use('/hadith-list', hadithlist)
+router.use('/slider', slider)
+router.use('/auth', auth)
+router.use('/quiz-sets', quizSet)
+router.use('/quiz-results', quizResult)
+router.use('/organizations', organization)
 
 module.exports = router

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { NavLink } from "react-router-dom";
-import slides from '../data/SliderDb';
+import staticSlides from '../data/SliderDb';
+import { SliderSkeleton } from '../components/Skeletons';
+
+const API = 'http://localhost:4040';
 
 const getFirstNWords = (text, n) => text.split(" ").slice(0, n).join(" ");
 const removeHtmlTags = (html) =>
@@ -10,6 +13,31 @@ const removeHtmlTags = (html) =>
 
 export default function SlickSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API}/slider`)
+      .then((r) => r.json())
+      .then((data) => {
+        const apiSlides = (data?.data?.sliders || [])
+          .filter((s) => s.isActive)
+          .map((s) => ({
+            id: s._id,
+            title: s.title,
+            description: s.description,
+            large_image: s.image ? `${API}/uploads/${s.image}` : null,
+          }));
+        // Fall back to static slides if no API slides exist yet
+        setSlides(apiSlides.length > 0 ? apiSlides : staticSlides);
+      })
+      .catch(() => {
+        setSlides(staticSlides);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <SliderSkeleton />;
 
   return (
     <div className="bg-isl-green py-10">
@@ -50,12 +78,18 @@ export default function SlickSlider() {
                 const numWordsToShow = slide.title.split(' ').length > 2 ? 10 : 20;
                 const descriptionText = removeHtmlTags(slide.description);
                 return (
-                  <div key={index} className="relative">
-                    <img
-                      src={slide.large_image}
-                      alt={slide.title}
-                      className="w-full h-64 sm:h-80 md:h-[440px] object-cover"
-                    />
+                  <div key={slide.id || index} className="relative">
+                    {slide.large_image ? (
+                      <img
+                        src={slide.large_image}
+                        alt={slide.title}
+                        className="w-full h-64 sm:h-80 md:h-[440px] object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-64 sm:h-80 md:h-[440px] bg-isl-green/30 flex items-center justify-center">
+                        <span className="text-white/20 font-arabic text-6xl">☪</span>
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-left">
                       <div className="text-isl-gold text-xs font-body font-bold tracking-widest mb-2">

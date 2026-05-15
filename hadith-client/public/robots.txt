@@ -1,3 +1,13 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow admin panel
+Disallow: /admin/
+Disallow: /admin/login
+
+# Disallow auth pages from indexing
+Disallow: /login
+Disallow: /sign-up
+
+# Sitemap location
+Sitemap: https://ilmhadith.com/sitemap.xml

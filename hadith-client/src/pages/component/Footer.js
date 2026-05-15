@@ -85,7 +85,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="space-y-3">
-            <h3 className="text-white font-bold text-xl font-body">Hadith Hub</h3>
+            <h3 className="text-white font-bold text-xl font-body">IlmHadith</h3>
             <span className="block font-arabic text-isl-gold text-xl">اَلأَحَادِيثُ النَّبَوِيَّة</span>
             <p className="text-gray-400 text-xs font-body">Qadri Jame Masjid Foundation</p>
             <p className="text-gray-400 text-xs font-body">Parsauni Khas, Gopalganj, Bihar, India</p>
@@ -170,7 +170,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2">
         <span className="text-gray-400 text-xs font-body">
           © {new Date().getFullYear()}{" "}
-          <strong className="text-isl-gold/80">Hadith Hub</strong>. All Rights Reserved.
+          <strong className="text-isl-gold/80">IlmHadith</strong>. All Rights Reserved.
         </span>
         <span className="flex items-center gap-1.5 text-gray-400 text-xs font-body">
           Made with <FaHeart className="text-isl-gold text-xs" /> by Arman Ali

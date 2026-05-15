@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { FaSignOutAlt, FaUserCircle, FaShieldAlt } from 'react-icons/fa';
 
 const navLinks = [
-  { to: '/',              label: 'Home'       },
-  { to: '/hadith-list',   label: 'Blogs'      },
-  { to: '/quiz',          label: 'Hadith Quiz'},
-  { to: '/donation',      label: 'Donation'   },
+  { to: '/',            label: 'Home'       },
+  { to: '/hadith-list', label: 'Hadith List'      },
+  { to: '/quiz',        label: 'Hadith Quiz'},
+  { to: '/donation',    label: 'Donation'   },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+    navigate('/');
+  };
 
   return (
     <>
@@ -23,12 +33,12 @@ export default function Navbar() {
         <nav className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
 
           {/* Brand */}
-          <NavLink to="/" className="flex items-center gap-3">
+          <NavLink to="/" className="flex items-center gap-3 no-underline">
             <div className="w-10 h-10 rounded-full bg-isl-gold/20 border-2 border-isl-gold flex items-center justify-center text-isl-gold font-arabic text-lg select-none">
               ☪
             </div>
             <div>
-              <div className="text-white font-bold text-lg font-body leading-none">Hadith Hub</div>
+              <div className="text-white font-bold text-lg font-body leading-none">IlmHadith</div>
               <div className="text-isl-gold text-[10px] font-body tracking-wider uppercase">Authentic Islamic Knowledge</div>
             </div>
           </NavLink>
@@ -39,6 +49,7 @@ export default function Navbar() {
               <li key={to}>
                 <NavLink
                   to={to}
+                  end={to === '/'}
                   className={({ isActive }) =>
                     `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 no-underline ${
                       isActive
@@ -55,18 +66,43 @@ export default function Navbar() {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <NavLink
-              to="/login"
-              className="px-4 py-2 text-sm font-medium text-isl-gold border border-isl-gold rounded-lg hover:bg-isl-gold hover:text-isl-green transition-all duration-200"
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/sign-up"
-              className="px-4 py-2 text-sm font-semibold bg-isl-gold text-isl-green rounded-lg hover:bg-isl-gold-light transition-all duration-200"
-            >
-              Sign Up
-            </NavLink>
+            {user ? (
+              <>
+                {user.isAdmin && (
+                  <NavLink
+                    to="/admin"
+                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-isl-gold border border-isl-gold/50 rounded-lg hover:bg-isl-gold/10 transition-all duration-200 no-underline"
+                  >
+                    <FaShieldAlt className="text-xs" /> Admin
+                  </NavLink>
+                )}
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10">
+                  <FaUserCircle className="text-isl-gold text-lg" />
+                  <span className="text-white text-sm font-body">{user.name?.split(' ')[0]}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium !text-white border border-white/30 rounded-lg hover:bg-red-500/20 hover:border-red-400/50 hover:!text-red-300 transition-all duration-200"
+                >
+                  <FaSignOutAlt className="text-xs" /> Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  className="px-4 py-2 text-sm font-medium !text-isl-gold border border-isl-gold rounded-lg hover:bg-isl-gold hover:!text-isl-green transition-all duration-200 no-underline"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/sign-up"
+                  className="px-4 py-2 text-sm font-semibold bg-isl-gold !text-isl-green rounded-lg hover:bg-isl-gold-light transition-all duration-200 no-underline"
+                >
+                  Sign Up
+                </NavLink>
+              </>
+            )}
           </div>
 
           {/* Mobile Hamburger */}
@@ -99,10 +135,10 @@ export default function Navbar() {
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-          <span className="text-isl-gold font-arabic text-xl">☪ Hadith Hub</span>
+          <span className="text-isl-gold font-arabic text-xl">☪ IlmHadith</span>
           <button
             onClick={() => setOpen(false)}
-            className="text-white/60 hover:text-white text-xl leading-none"
+            className="!text-white/60 hover:!text-white text-xl leading-none"
             aria-label="Close menu"
           >
             ✕
@@ -120,6 +156,7 @@ export default function Navbar() {
             <li key={to}>
               <NavLink
                 to={to}
+                end={to === '/'}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   `block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 no-underline ${
@@ -134,24 +171,55 @@ export default function Navbar() {
             </li>
           ))}
           <li className="my-3 border-t border-white/10 pt-3"></li>
-          <li>
-            <NavLink
-              to="/login"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 rounded-lg text-sm font-medium text-isl-gold border border-isl-gold hover:bg-isl-gold hover:text-isl-green transition-all duration-200 text-center"
-            >
-              Login
-            </NavLink>
-          </li>
-          <li className="mt-2">
-            <NavLink
-              to="/sign-up"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 rounded-lg text-sm font-semibold bg-isl-gold text-isl-green hover:bg-isl-gold-light transition-all duration-200 text-center"
-            >
-              Sign Up
-            </NavLink>
-          </li>
+          {user ? (
+            <>
+              {user.isAdmin && (
+                <li>
+                  <NavLink
+                    to="/admin"
+                    onClick={() => setOpen(false)}
+                    className="block px-4 py-3 rounded-lg text-sm font-medium !text-isl-gold hover:bg-white/10 transition-all duration-200 no-underline"
+                  >
+                    ⚙ Admin Panel
+                  </NavLink>
+                </li>
+              )}
+              <li>
+                <div className="px-4 py-2 text-sm text-white/60 font-body">
+                  Signed in as <span className="text-white font-semibold">{user.name}</span>
+                </div>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left block px-4 py-3 rounded-lg text-sm font-medium !text-red-300 hover:bg-red-500/20 transition-all duration-200"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <NavLink
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-3 rounded-lg text-sm font-medium !text-isl-gold border border-isl-gold hover:bg-isl-gold hover:!text-isl-green transition-all duration-200 no-underline text-center"
+                >
+                  Login
+                </NavLink>
+              </li>
+              <li className="mt-2">
+                <NavLink
+                  to="/sign-up"
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-3 rounded-lg text-sm font-semibold bg-isl-gold !text-isl-green hover:bg-isl-gold-light transition-all duration-200 no-underline text-center"
+                >
+                  Sign Up
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </>

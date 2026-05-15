@@ -2,10 +2,31 @@ import React from "react";
 import Footer from "./pages/component/Footer";
 import HadithSlider from "./pages/HadithSlider";
 import HadithCollections from "./pages/HadithCollections";
+import SEO from "./components/SEO";
+
+const HOME_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://ilmhadith.com/#webpage",
+    "url": "https://ilmhadith.com/",
+    "name": "IlmHadith — Authentic Hadith & Islamic Knowledge",
+    "description": "Browse authentic Hadiths of Prophet Muhammad ﷺ, explore Islamic knowledge, take Hadith quizzes and donate for the Ummah.",
+    "isPartOf": { "@id": "https://ilmhadith.com" },
+    "primaryImageOfPage": { "@id": "https://ilmhadith.com/og-image.png" }
+  }
+];
 
 export default function Dashboard() {
   return (
     <>
+      <SEO
+        title="Home"
+        description="Discover authentic Hadiths of Prophet Muhammad ﷺ. Browse the ultimate Hadith collection, take Islamic quizzes, and grow in Islamic knowledge with IlmHadith."
+        keywords="hadith, Islamic knowledge, Prophet Muhammad, Sunnah, Quran, Islamic quiz, sahih hadith"
+        path="/"
+        schema={HOME_SCHEMA}
+      />
       {/* Hero Slider */}
       <section>
         <HadithSlider />

@@ -128,45 +128,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST endpoint to create a new Hadith
-router.post('/', upload.single('HadithImage'), async (req, res) => {
+router.put('/:id', upload.single('HadithImage'), async (req, res) => {
   try {
-    const { HadithTitle, HadithName, HadithDescription, Date, hadithTypeId } = req.body;
-
-    // Check required fields
-    if (!HadithTitle || !HadithDescription || !hadithTypeId) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Missing required fields: HadithTitle, HadithDescription, and hadithTypeId'
-      });
-    }
-
-    // Get the filename of the uploaded image (if present)
-    const HadithImage = req.file ? req.file.filename : null;
-
-    // Create new Hadith entry
-    const newHadith = await HadithList.create({
-      HadithImage,
-      HadithTitle,
-      HadithName,
-      HadithDescription,
-      Date,
-      hadithTypeId
-    });
-
-    res.status(201).json({
-      status: 'success',
-      data: {
-        hadith: newHadith
-      }
-    });
+    const updates = { ...req.body };
+    if (req.file) updates.HadithImage = req.file.filename;
+    const updated = await HadithList.findByIdAndUpdate(req.params.id, updates, { new: true, runValidators: true });
+    if (!updated) return res.status(404).json({ status: 'fail', message: 'Hadith not found' });
+    res.json({ status: 'success', data: { hadith: updated } });
   } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message
-    });
+    res.status(400).json({ status: 'fail', message: error.message });
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    await HadithList.findByIdAndDelete(req.params.id);
+    res.json({ status: 'success', data: null });
+  } catch (error) {
+    res.status(400).json({ status: 'fail', message: error.message });
+  }
+});
 
 module.exports = router

@@ -1,182 +1,340 @@
-import React, { useState } from 'react';
-import ScannerImage from '../assets/img/scanner.jpeg';
-import DonationModal from './DonationModal';
+import React, { useState, useEffect } from 'react';
+import { FiMapPin, FiStar, FiCopy, FiCheck, FiX } from 'react-icons/fi';
 
-const TEXT = {
-  en: {
-    logoArabic: "سورة الرحمة",
-    logoSubtitle: "THE MOSQUE OF LIGHT",
-    mosqueName: "QADRI JAME MASJID",
-    title: "Sadaqah",
-    subtitle: "invest in your akhirah",
-    description:
-      "Acts of kindness can bring a smile to many faces around the world. Invest in your akhirah and help those in greatest need. Your assistance is their lifeline, so donate now.",
-    whatIsTitle: "What is Sadaqah in Islam?",
-    whatIsDesc:
-      "Helping others is a fundamental part of faith. Any act of voluntary charity benefits those in need.",
-    quote:
-      `"Those who spend their wealth by night and by day, secretly and publicly, will have their reward with their Lord." (Qur'an 2:274)`,
-    payOnline: "Pay Sadaqah Online",
-    payDesc: "Your donation will help people in need. Any amount you give will help change lives.",
-    donateNowBtn: "DONATE NOW",
-    langBtn: "हिंदी में देखें",
-    donationCards: [
-      { icon: "🍚", amount: "₹ 500",   en: "Could provide a full month of essential food.",        hi: "एक महीने का आवश्यक भोजन उपलब्ध करा सकता है।" },
-      { icon: "💧", amount: "₹ 1000",  en: "Could provide clean drinking water for a month.",       hi: "पूरा महीना साफ पीने का पानी उपलब्ध करा सकता है।" },
-      { icon: "🏠", amount: "₹ 2000",  en: "Could ensure safe shelter for vulnerable families.",    hi: "ज़रूरतमंद परिवारों को सुरक्षित आश्रय दे सकता है।" },
-      { icon: "➕", amount: "₹ 5000",  en: "Could provide life-saving medicines and care.",         hi: "जीवनरक्षक दवाइयाँ और देखभाल उपलब्ध करा सकता है।" },
-      { icon: "📦", amount: "₹ 10000", en: "Could provide an emergency relief package.",            hi: "आपातकालीन राहत पैकेज प्रदान कर सकता है।" },
-    ],
-  },
-  hi: {
-    logoArabic: "सूरत-उर-रहमा",
-    logoSubtitle: "THE MOSQUE OF LIGHT",
-    mosqueName: "कादरी जामे मस्जिद",
-    title: "सदक़ा",
-    subtitle: "अपनी आख़िरत में निवेश करें",
-    description:
-      "आपकी नेकी किसी जरूरतमंद के चेहरे पर मुस्कान ला सकती है। अपनी आख़िरत के लिए निवेश करें और ज़रूरतमंदों की मदद करें। आपका सहयोग उनकी जीवनरेखा है, अभी दान करें।",
-    whatIsTitle: "इस्लाम में सदक़ा क्या है?",
-    whatIsDesc:
-      "दूसरों की मदद करना ईमान का एक अहम हिस्सा है। अपनी मर्ज़ी से दी गई कोई भी भलाई ज़रूरतमंदों के काम आती है।",
-    quote:
-      `"जो लोग रात और दिन, छिपकर और खुले तौर पर अल्लाह की राह में खर्च करते हैं, उनके लिए उनके रब के पास बड़ा सवाब है।" (कुरआन 2:274)`,
-    payOnline: "ऑनलाइन सदक़ा अदा करें",
-    payDesc: "आपका सदक़ा कई ज़रूरतमंद लोगों की मदद कर सकता है। आपकी दी हुई कोई भी रकम उनके जीवन में बदलाव ला सकती है।",
-    donateNowBtn: "अभी दान करें",
-    langBtn: "View in English",
-    donationCards: [
-      { icon: "🍚", amount: "₹ 500",   en: "Could provide a full month of essential food.",        hi: "एक महीने का आवश्यक भोजन उपलब्ध करा सकता है।" },
-      { icon: "💧", amount: "₹ 1000",  en: "Could provide clean drinking water for a month.",       hi: "पूरा महीना साफ पीने का पानी उपलब्ध करा सकता है।" },
-      { icon: "🏠", amount: "₹ 2000",  en: "Could ensure safe shelter for vulnerable families.",    hi: "ज़रूरतमंद परिवारों को सुरक्षित आश्रय दे सकता है।" },
-      { icon: "➕", amount: "₹ 5000",  en: "Could provide life-saving medicines and care.",         hi: "जीवनरक्षक दवाइयाँ और देखभाल उपलब्ध करा सकता है।" },
-      { icon: "📦", amount: "₹ 10000", en: "Could provide an emergency relief package.",            hi: "आपातकालीन राहत पैकेज प्रदान कर सकता है।" },
-    ],
-  },
+const API = 'http://localhost:4040';
+
+const TYPE_LABELS = { mosque: 'Mosque', madrasa: 'Madrasa', foundation: 'Foundation' };
+const TYPE_COLORS = {
+  mosque: 'bg-green-100 text-green-700',
+  madrasa: 'bg-blue-100 text-blue-700',
+  foundation: 'bg-purple-100 text-purple-700',
 };
+const TYPE_ICONS = { mosque: '🕌', madrasa: '📚', foundation: '🤲' };
+
+// ─── Copy helper ─────────────────────────────────────────────────────────────
+
+function CopyButton({ value }) {
+  const [copied, setCopied] = useState(false);
+  if (!value) return null;
+  const copy = () => {
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    });
+  };
+  return (
+    <button
+      onClick={copy}
+      className="ml-2 flex-shrink-0 text-gray-400 hover:text-isl-green transition"
+      title="Copy"
+    >
+      {copied ? <FiCheck size={13} className="text-green-500" /> : <FiCopy size={13} />}
+    </button>
+  );
+}
+
+// ─── Payment Modal ────────────────────────────────────────────────────────────
+
+function PaymentModal({ org, onClose }) {
+  if (!org) return null;
+
+  const rows = [
+    org.accountHolder && ['Account Holder', org.accountHolder],
+    org.bankName && ['Bank', org.bankName],
+    org.accountNumber && ['Account Number', org.accountNumber],
+    org.ifscCode && ['IFSC Code', org.ifscCode],
+    org.upiId && ['UPI ID', org.upiId],
+  ].filter(Boolean);
+
+  const hasPaymentDetails = rows.length > 0;
+  const hasQr = !!org.qrImage;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto relative">
+
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-500 flex items-center justify-center transition"
+        >
+          <FiX size={16} />
+        </button>
+
+        {/* Header */}
+        <div className="bg-isl-green px-7 pt-8 pb-6 rounded-t-3xl">
+          <div className="flex items-center gap-3 mb-1">
+            <span className="text-2xl">{TYPE_ICONS[org.type]}</span>
+            <div>
+              <p className="text-isl-gold text-xs font-semibold uppercase tracking-widest">{TYPE_LABELS[org.type]}</p>
+              <h2 className="text-white font-bold text-xl leading-tight">{org.name}</h2>
+            </div>
+          </div>
+          {org.location && (
+            <p className="flex items-center gap-1.5 text-white/60 text-xs mt-2">
+              <FiMapPin size={11} /> {org.location}
+            </p>
+          )}
+          {org.description && (
+            <p className="text-white/70 text-sm mt-3 leading-relaxed">{org.description}</p>
+          )}
+        </div>
+
+        <div className="p-7 space-y-6">
+
+          {/* QR Code */}
+          {hasQr && (
+            <div className="text-center">
+              <p className="text-sm font-semibold text-gray-700 mb-4 flex items-center justify-center gap-2">
+                <span className="h-px flex-1 bg-gray-200" />
+                Scan & Pay via UPI
+                <span className="h-px flex-1 bg-gray-200" />
+              </p>
+              <div className="inline-block p-3 bg-amber-50 border-4 border-isl-gold rounded-2xl shadow-inner">
+                <img
+                  src={`${API}/uploads/${org.qrImage}`}
+                  alt="QR Code"
+                  className="w-48 h-48 object-contain rounded-xl"
+                />
+              </div>
+              {org.upiId && (
+                <p className="mt-3 text-sm text-gray-600">
+                  UPI:{' '}
+                  <span className="font-mono bg-gray-100 px-2 py-0.5 rounded text-xs font-semibold">
+                    {org.upiId}
+                  </span>
+                </p>
+              )}
+              <p className="mt-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">
+                📸 Please send a screenshot after payment to confirm.
+              </p>
+            </div>
+          )}
+
+          {/* Bank / UPI Details */}
+          {hasPaymentDetails && (
+            <div>
+              <p className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                <span className="h-px flex-1 bg-gray-200" />
+                {hasQr ? 'Or Pay via Bank Transfer' : 'Payment Details'}
+                <span className="h-px flex-1 bg-gray-200" />
+              </p>
+              <div className="bg-gray-50 rounded-2xl divide-y divide-gray-200 overflow-hidden">
+                {rows.map(([label, value]) => (
+                  <div key={label} className="flex items-center justify-between px-4 py-3">
+                    <span className="text-xs text-gray-500 font-medium">{label}</span>
+                    <div className="flex items-center gap-1">
+                      <span className="font-mono text-sm font-semibold text-gray-800">{value}</span>
+                      <CopyButton value={value} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!hasQr && !hasPaymentDetails && (
+            <p className="text-center text-gray-400 text-sm py-4">
+              Payment details not yet added. Please contact the organization directly.
+            </p>
+          )}
+
+          {/* Footer */}
+          <p className="text-center text-xs text-gray-400 pt-2">
+            May Allah accept your Sadaqah and reward you abundantly. آمين
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Org Card ─────────────────────────────────────────────────────────────────
+
+function OrgCard({ org, onDonate }) {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 overflow-hidden flex flex-col">
+      {/* Featured badge */}
+      {org.featured && (
+        <div className="bg-isl-gold/10 border-b border-isl-gold/20 px-4 py-1.5 flex items-center gap-1.5">
+          <FiStar size={12} className="text-isl-gold fill-isl-gold" />
+          <span className="text-xs font-semibold text-isl-gold">Featured</span>
+        </div>
+      )}
+
+      <div className="p-5 flex-1 flex flex-col">
+        <div className="flex items-start gap-3 mb-3">
+          {org.qrImage ? (
+            <img
+              src={`${API}/uploads/${org.qrImage}`}
+              alt={org.name}
+              className="w-14 h-14 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+            />
+          ) : (
+            <div className="w-14 h-14 rounded-xl bg-isl-green/10 flex items-center justify-center text-2xl flex-shrink-0">
+              {TYPE_ICONS[org.type]}
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[org.type]}`}>
+              {TYPE_LABELS[org.type]}
+            </span>
+            <h3 className="font-bold text-gray-800 text-sm mt-1 leading-snug">{org.name}</h3>
+          </div>
+        </div>
+
+        {org.location && (
+          <p className="flex items-center gap-1.5 text-xs text-gray-400 mb-2">
+            <FiMapPin size={11} /> {org.location}
+          </p>
+        )}
+
+        {org.description && (
+          <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 flex-1 mb-4">
+            {org.description}
+          </p>
+        )}
+
+        {/* Payment method badges */}
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {org.upiId && (
+            <span className="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-medium">UPI</span>
+          )}
+          {org.qrImage && (
+            <span className="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full font-medium">QR Code</span>
+          )}
+          {org.accountNumber && (
+            <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-medium">Bank Transfer</span>
+          )}
+        </div>
+
+        <button
+          onClick={() => onDonate(org)}
+          className="w-full py-2.5 bg-isl-gold text-isl-green font-bold text-sm rounded-xl hover:bg-isl-gold-light transition-colors duration-200 shadow-sm"
+        >
+          Donate Now
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
 
 const SadaqahPage = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [lang, setLang] = useState("en");
-  const t = TEXT[lang];
+  const [orgs, setOrgs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterType, setFilterType] = useState('all');
+  const [selectedOrg, setSelectedOrg] = useState(null);
 
-  const handleDonateClick = (e) => {
-    e.preventDefault();
-    setIsModalVisible(true);
+  useEffect(() => {
+    fetch(`${API}/organizations`)
+      .then((r) => r.json())
+      .then((d) => {
+        const active = (d?.data?.organizations || []).filter((o) => o.isActive);
+        setOrgs(active);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = filterType === 'all' ? orgs : orgs.filter((o) => o.type === filterType);
+
+  const counts = {
+    all: orgs.length,
+    mosque: orgs.filter((o) => o.type === 'mosque').length,
+    madrasa: orgs.filter((o) => o.type === 'madrasa').length,
+    foundation: orgs.filter((o) => o.type === 'foundation').length,
   };
 
   return (
     <div className="bg-isl-cream min-h-screen font-body">
 
-      {/* Hero */}
+      {/* ── Hero ── */}
       <div className="bg-isl-green text-white relative overflow-hidden">
-        {/* Decorative circle */}
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-isl-gold/10 translate-y-1/2 -translate-x-1/3" />
-
-        <div className="relative max-w-4xl mx-auto px-6 py-16 text-center">
-          {/* Top Bar */}
-          <div className="flex items-center justify-between mb-10 flex-wrap gap-3">
-            <div className="text-left">
-              <div className="font-arabic text-isl-gold text-lg">{t.logoArabic}</div>
-              <div className="text-white/50 text-xs tracking-widest uppercase">{t.logoSubtitle}</div>
-            </div>
-            <div className="text-white/70 text-sm font-semibold tracking-wider">{t.mosqueName}</div>
-            <button
-              onClick={() => setLang(lang === "en" ? "hi" : "en")}
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg border border-white/20 transition-all duration-200"
-            >
-              {t.langBtn}
-            </button>
+        <div className="relative max-w-5xl mx-auto px-6 py-16 text-center">
+          <div className="font-arabic text-isl-gold text-4xl mb-2">صَدَقَة</div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3">Give Sadaqah</h1>
+          <div className="flex items-center justify-center gap-3 my-4">
+            <div className="h-px bg-isl-gold/40 w-16" />
+            <span className="text-isl-gold text-sm">✦</span>
+            <div className="h-px bg-isl-gold/40 w-16" />
           </div>
+          <p className="text-white/70 text-sm leading-relaxed max-w-xl mx-auto mb-6">
+            Support mosques, madarsas, and foundations around you. Choose an organization below and pay via QR, UPI, or bank transfer — every rupee counts.
+          </p>
+          <blockquote className="bg-white/10 border border-white/20 rounded-2xl px-6 py-4 max-w-2xl mx-auto text-sm italic text-white/80 leading-relaxed">
+            "Those who spend their wealth by night and by day, secretly and publicly, will have their reward with their Lord." — Qur'an 2:274
+          </blockquote>
+        </div>
+      </div>
 
-          {/* Hero Text */}
-          <div className="space-y-4">
-            <h1 className="font-arabic text-5xl md:text-6xl text-isl-gold">{t.title}</h1>
-            <p className="text-isl-gold/80 text-lg font-medium tracking-wide">{t.subtitle}</p>
-            <p className="text-white/70 text-sm leading-relaxed max-w-2xl mx-auto">{t.description}</p>
-            <div className="pt-4">
+      {/* ── Org Listing ── */}
+      <div className="max-w-5xl mx-auto px-6 py-12">
+
+        {/* Filter tabs */}
+        <div className="flex flex-wrap gap-2 mb-8 justify-center">
+          {[
+            { key: 'all', label: 'All Organizations' },
+            { key: 'mosque', label: `Mosque` },
+            { key: 'madrasa', label: `Madrasa` },
+            { key: 'foundation', label: `Foundation` },
+          ].map(({ key, label }) => (
+            counts[key] > 0 && (
               <button
-                onClick={handleDonateClick}
-                className="px-8 py-3.5 bg-isl-gold text-isl-green font-bold text-sm rounded-xl hover:bg-isl-gold-light hover:scale-105 transition-all duration-200 shadow-xl shadow-black/20 tracking-widest"
-              >
-                {t.donateNowBtn}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* What is Sadaqah */}
-      <div className="max-w-4xl mx-auto px-6 py-14">
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Info Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-isl-gold/20">
-            <h3 className="text-lg font-bold text-isl-green mb-3 font-body">{t.whatIsTitle}</h3>
-            <p className="text-gray-600 text-sm leading-relaxed font-body">{t.whatIsDesc}</p>
-          </div>
-
-          {/* Quote Card */}
-          <div className="bg-isl-green rounded-2xl p-6 shadow-md relative overflow-hidden">
-            <div className="absolute top-3 left-4 font-arabic text-isl-gold text-4xl opacity-20">"</div>
-            <p className="text-white text-sm leading-relaxed font-body relative z-10 pt-4">{t.quote}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Donation Options */}
-      <div className="bg-white py-14">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-isl-green font-body">{t.payOnline}</h2>
-            <div className="flex items-center justify-center gap-3 mt-3 mb-3">
-              <div className="h-px bg-isl-gold/40 w-16"></div>
-              <span className="text-isl-gold text-xs">✦</span>
-              <div className="h-px bg-isl-gold/40 w-16"></div>
-            </div>
-            <p className="text-gray-500 text-sm font-body">{t.payDesc}</p>
-          </div>
-
-          {/* Donation Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-            {t.donationCards.map((card, index) => (
-              <div
-                key={index}
-                className={`rounded-2xl p-6 text-center border-2 transition-all duration-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 ${
-                  index === 2
-                    ? 'bg-isl-green border-isl-gold text-white shadow-lg scale-105'
-                    : 'bg-white border-gray-100 hover:border-isl-gold/50'
+                key={key}
+                onClick={() => setFilterType(key)}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  filterType === key
+                    ? 'bg-isl-green text-white shadow-md'
+                    : 'bg-white border border-gray-200 text-gray-600 hover:border-isl-green/40 hover:text-isl-green'
                 }`}
               >
-                <div className="text-4xl mb-3">{card.icon}</div>
-                <p className={`text-2xl font-bold mb-2 font-body ${index === 2 ? 'text-isl-gold' : 'text-isl-green'}`}>
-                  {card.amount}
-                </p>
-                <p className={`text-xs leading-relaxed font-body ${index === 2 ? 'text-white/75' : 'text-gray-500'}`}>
-                  {lang === "en" ? card.en : card.hi}
-                </p>
-              </div>
+                {key !== 'all' && <span>{TYPE_ICONS[key]}</span>}
+                {label}
+                <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
+                  filterType === key ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
+                }`}>{counts[key]}</span>
+              </button>
+            )
+          ))}
+        </div>
+
+        {/* Grid */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-white rounded-2xl animate-pulse border border-gray-100" />
             ))}
           </div>
-
-          <div className="text-center">
-            <button
-              onClick={handleDonateClick}
-              className="px-10 py-3.5 bg-isl-gold text-isl-green font-bold text-sm rounded-xl hover:bg-isl-gold-light hover:scale-105 transition-all duration-200 shadow-lg tracking-widest"
-            >
-              {t.donateNowBtn}
-            </button>
+        ) : filtered.length === 0 ? (
+          <div className="bg-white rounded-2xl p-16 text-center shadow-sm border border-gray-100">
+            <div className="text-6xl mb-4">🕌</div>
+            <p className="text-gray-600 font-semibold text-lg">No organizations listed yet</p>
+            <p className="text-gray-400 text-sm mt-2">Check back soon — more organizations will be added.</p>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filtered.map((org) => (
+              <OrgCard key={org._id} org={org} onDonate={setSelectedOrg} />
+            ))}
+          </div>
+        )}
+
       </div>
 
-      {/* Footer */}
-      <div className="bg-isl-dark text-center py-6 px-4">
-        <p className="text-white/70 text-sm font-body font-semibold tracking-widest">QADRI JAME MASJID</p>
-        <p className="text-white/40 text-xs font-body mt-1">Donation</p>
+      {/* ── Footer strip ── */}
+      <div className="bg-isl-dark text-center py-8 px-4">
+        <div className="font-arabic text-isl-gold text-xl mb-1">جَزَاكَ اللَّهُ خَيْرًا</div>
+        <p className="text-white/60 text-xs">May Allah reward you with goodness</p>
       </div>
 
-      <DonationModal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)} ScannerImage={ScannerImage} />
+      {/* Payment Modal */}
+      {selectedOrg && (
+        <PaymentModal org={selectedOrg} onClose={() => setSelectedOrg(null)} />
+      )}
     </div>
   );
 };

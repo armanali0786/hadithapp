@@ -21,21 +21,31 @@ router.get('/', async (req, res) => {
 // ****************************
 
 router.post('/', async (req, res) => {
-    console.log(req.body);
-    try {
-      const newHadithType = await HadithTypeList.create(req.body)
-      res.status(201).json({
-        status: 'success',
-        data: {
-          hadithType: newHadithType
-        }
-      })
-    } catch (error) {
-      res.status(400).json({
-        status: 'fail',
-        message: error
-      })
-    }
-  })
+  try {
+    const newHadithType = await HadithTypeList.create(req.body)
+    res.status(201).json({ status: 'success', data: { hadithType: newHadithType } })
+  } catch (error) {
+    res.status(400).json({ status: 'fail', message: error.message })
+  }
+})
+
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await HadithTypeList.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    if (!updated) return res.status(404).json({ status: 'fail', message: 'Not found' })
+    res.json({ status: 'success', data: { hadithType: updated } })
+  } catch (error) {
+    res.status(400).json({ status: 'fail', message: error.message })
+  }
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
+    await HadithTypeList.findByIdAndDelete(req.params.id)
+    res.json({ status: 'success', data: null })
+  } catch (error) {
+    res.status(400).json({ status: 'fail', message: error.message })
+  }
+})
 
 module.exports = router

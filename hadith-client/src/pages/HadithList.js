@@ -1,9 +1,19 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { HadithDb } from "../data/HadithDb";
 import { FaClock, FaArrowRight } from "react-icons/fa";
+import SEO from "../components/SEO";
+import { HadithCardSkeleton } from "../components/Skeletons";
 
 export default function HadithList() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API mount delay (replace with real fetch when API is ready)
+    const t = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(t);
+  }, []);
 
   const getFirstNWords = (text, n) => text.split(" ").slice(0, n).join(" ");
 
@@ -16,6 +26,12 @@ export default function HadithList() {
 
   return (
     <div className="bg-isl-cream min-h-screen">
+      <SEO
+        title="Hadith Blogs & Articles"
+        description="Read authentic Hadith articles and Islamic blogs curated from the collections of Bukhari, Muslim, and more. Grow in Islamic knowledge with IlmHadith."
+        keywords="hadith blogs, Islamic articles, sahih bukhari, sahih muslim, hadith collection, Islamic reading"
+        path="/hadith-list"
+      />
       <div className="max-w-6xl mx-auto px-4">
         <div className="pt-10 pb-4">
 
@@ -66,7 +82,9 @@ export default function HadithList() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {HadithDb.map((hadith, index) => {
+          {loading
+            ? [...Array(6)].map((_, i) => <HadithCardSkeleton key={i} />)
+            : HadithDb.map((hadith, index) => {
             const numWordsToShow = hadith.title.split(" ").length > 5 ? 5 : 10;
             const descriptionText = removeHtmlTags(hadith.title);
             const dateParts = hadith.Date ? hadith.Date.split(" ") : ["01", "July"];
@@ -115,7 +133,7 @@ export default function HadithList() {
                 </div>
               </div>
             );
-          })}
+            })}
         </div>
       </div>
     </div>
