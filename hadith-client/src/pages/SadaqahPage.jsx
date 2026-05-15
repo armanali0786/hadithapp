@@ -119,7 +119,7 @@ const SadaqahPage = () => {
           {/* Quote Card */}
           <div className="bg-isl-green rounded-2xl p-6 shadow-md relative overflow-hidden">
             <div className="absolute top-3 left-4 font-arabic text-isl-gold text-4xl opacity-20">"</div>
-            <p className="text-white/85 text-sm leading-relaxed font-body relative z-10 pt-4">{t.quote}</p>
+            <p className="text-white text-sm leading-relaxed font-body relative z-10 pt-4">{t.quote}</p>
           </div>
         </div>
       </div>

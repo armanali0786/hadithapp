@@ -40,10 +40,10 @@ export default function Navbar() {
                 <NavLink
                   to={to}
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 no-underline ${
                       isActive
-                        ? 'text-isl-gold font-semibold bg-white/10'
-                        : 'text-white/85 hover:text-isl-gold hover:bg-white/10'
+                        ? '!text-isl-gold font-semibold bg-white/10'
+                        : '!text-white hover:!text-isl-gold hover:bg-white/10'
                     }`
                   }
                 >
@@ -122,10 +122,10 @@ export default function Navbar() {
                 to={to}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
-                  `block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  `block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 no-underline ${
                     isActive
-                      ? 'text-isl-gold bg-white/10 font-semibold'
-                      : 'text-white/85 hover:text-isl-gold hover:bg-white/10'
+                      ? '!text-isl-gold bg-white/10 font-semibold'
+                      : '!text-white hover:!text-isl-gold hover:bg-white/10'
                   }`
                 }
               >
