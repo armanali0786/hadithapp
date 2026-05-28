@@ -32,7 +32,7 @@ export default function AudioManagement() {
     setLoading(true);
     try {
       const res = await axios.get(`${API}/audio-hadiths`);
-      const data = res.data?.audioHadiths || res.data?.data || res.data || [];
+      const data = res.data?.data?.audioHadiths || res.data?.audioHadiths || [];
       setItems(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);
