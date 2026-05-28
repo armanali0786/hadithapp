@@ -132,7 +132,7 @@ export default function AudioHadithsPage() {
   useEffect(() => {
     axios.get(`${API}/audio-hadiths?active=true`)
       .then(res => {
-        const data = res.data?.audioHadiths || res.data?.data || res.data || [];
+        const data = res.data?.data?.audioHadiths || res.data?.audioHadiths || [];
         setItems(Array.isArray(data) ? data : []);
       })
       .catch(() => setError('Failed to load audio hadiths. Please try again later.'))

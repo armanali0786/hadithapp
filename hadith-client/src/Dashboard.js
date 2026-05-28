@@ -10,8 +10,8 @@ import ReadingStreak from './components/ReadingStreak';
 import BookmarkButton from './components/BookmarkButton';
 import {
   FiSearch, FiVolume2, FiBell, FiChevronRight, FiChevronLeft,
-  FiStar, FiMoon, FiSun, FiBookOpen, FiMessageCircle, FiUsers,
-  FiPlayCircle, FiArrowRight, FiHeart, FiBookmark
+  FiStar, FiSun, FiUsers,
+  FiPlayCircle, FiPauseCircle, FiArrowRight, FiBookmark
 } from 'react-icons/fi';
 import { FaQuoteLeft, FaMosque, FaHandHoldingHeart } from 'react-icons/fa';
 
@@ -310,6 +310,11 @@ function AudioHadithsSection() {
       .finally(() => setLoading(false));
   }, []);
 
+  const getAudioSrc = (url) => {
+    if (!url) return null;
+    return url.startsWith('http') ? url : `${API}/${url}`;
+  };
+
   const handlePlay = (item) => {
     if (playing === item._id) {
       audioRef.current?.pause();
@@ -317,7 +322,7 @@ function AudioHadithsSection() {
     } else {
       if (audioRef.current) {
         audioRef.current.pause();
-        audioRef.current.src = `${API}/${item.audioUrl}`;
+        audioRef.current.src = getAudioSrc(item.audioUrl);
         audioRef.current.play().catch(() => {});
       }
       setPlaying(item._id);
@@ -347,7 +352,9 @@ function AudioHadithsSection() {
             {audios.map(item => (
               <div
                 key={item._id}
-                className="bg-isl-cream border border-isl-stone/50 rounded-2xl p-5 flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:border-isl-gold/40"
+                className={`bg-isl-cream border rounded-2xl p-5 flex items-center gap-4 hover:shadow-md transition-all duration-200 ${
+                  playing === item._id ? 'border-isl-green/50 shadow-md' : 'border-isl-stone/50 hover:border-isl-gold/40'
+                }`}
               >
                 <button
                   onClick={() => handlePlay(item)}
@@ -357,9 +364,14 @@ function AudioHadithsSection() {
                       : 'bg-isl-green/10 text-isl-green hover:bg-isl-green hover:text-white'
                   }`}
                 >
-                  <FiPlayCircle size={22} />
+                  {playing === item._id ? <FiPauseCircle size={22} /> : <FiPlayCircle size={22} />}
                 </button>
                 <div className="flex-1 min-w-0">
+                  {item.arabicTitle && (
+                    <p className="font-arabic text-sm text-isl-gold text-right dir-rtl leading-snug mb-0.5 truncate">
+                      {item.arabicTitle}
+                    </p>
+                  )}
                   <div className="font-body font-semibold text-gray-800 text-sm truncate">{item.title}</div>
                   <div className="text-gray-500 text-xs mt-0.5 flex items-center gap-2">
                     <FiVolume2 size={11} />
