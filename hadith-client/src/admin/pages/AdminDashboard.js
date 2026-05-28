@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FiImage, FiList, FiBookOpen, FiHelpCircle } from 'react-icons/fi';
+import {
+  FiImage, FiList, FiBookOpen, FiHelpCircle,
+  FiMusic, FiBell, FiMessageSquare, FiUser,
+  FiHeart, FiLayers, FiStar, FiRepeat, FiTag
+} from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 
 const API = 'http://localhost:4040';
@@ -8,23 +12,40 @@ const API = 'http://localhost:4040';
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     sliders: 0, collections: 0, hadiths: 0, questions: 0,
+    audioHadiths: 0, announcements: 0, quotes: 0, scholars: 0,
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [s, c, h, q] = await Promise.all([
+        const [s, c, h, q, a, ann, qt, sch] = await Promise.allSettled([
           axios.get(`${API}/slider`),
           axios.get(`${API}/hadith-type`),
           axios.get(`${API}/hadith-list`),
           axios.get(`${API}/questions`),
+          axios.get(`${API}/audio-hadiths`),
+          axios.get(`${API}/announcements`),
+          axios.get(`${API}/islamic-quotes`),
+          axios.get(`${API}/scholars`),
         ]);
         setStats({
-          sliders: s.data?.data?.sliders?.length || 0,
-          collections: c.data?.hadithType?.length || 0,
-          hadiths: h.data?.data?.hadithlist?.length || 0,
-          questions: q.data?.data?.questions?.length || 0,
+          sliders: s.status === 'fulfilled' ? (s.value.data?.data?.sliders?.length || 0) : 0,
+          collections: c.status === 'fulfilled' ? (c.value.data?.hadithType?.length || 0) : 0,
+          hadiths: h.status === 'fulfilled' ? (h.value.data?.data?.hadithlist?.length || 0) : 0,
+          questions: q.status === 'fulfilled' ? (q.value.data?.data?.questions?.length || 0) : 0,
+          audioHadiths: a.status === 'fulfilled'
+            ? (a.value.data?.audioHadiths?.length ?? a.value.data?.length ?? 0)
+            : 0,
+          announcements: ann.status === 'fulfilled'
+            ? (ann.value.data?.announcements?.length ?? ann.value.data?.length ?? 0)
+            : 0,
+          quotes: qt.status === 'fulfilled'
+            ? (qt.value.data?.quotes?.length ?? qt.value.data?.length ?? 0)
+            : 0,
+          scholars: sch.status === 'fulfilled'
+            ? (sch.value.data?.scholars?.length ?? sch.value.data?.length ?? 0)
+            : 0,
         });
       } catch (err) {
         console.error('Stats fetch error:', err);
@@ -40,6 +61,25 @@ export default function AdminDashboard() {
     { label: 'Collections', value: stats.collections, icon: FiList, color: 'bg-isl-green', to: '/admin/collections' },
     { label: 'Hadith Articles', value: stats.hadiths, icon: FiBookOpen, color: 'bg-isl-gold', to: '/admin/hadiths' },
     { label: 'Quiz Questions', value: stats.questions, icon: FiHelpCircle, color: 'bg-purple-500', to: '/admin/quiz' },
+    { label: 'Audio Hadiths', value: stats.audioHadiths, icon: FiMusic, color: 'bg-teal-500', to: '/admin/audio' },
+    { label: 'Announcements', value: stats.announcements, icon: FiBell, color: 'bg-orange-500', to: '/admin/announcements' },
+    { label: 'Quotes', value: stats.quotes, icon: FiMessageSquare, color: 'bg-indigo-500', to: '/admin/quotes' },
+    { label: 'Scholars', value: stats.scholars, icon: FiUser, color: 'bg-pink-500', to: '/admin/scholars' },
+  ];
+
+  const quickActions = [
+    { to: '/admin/slider', label: 'Manage Slider', icon: FiImage },
+    { to: '/admin/collections', label: 'Manage Collections', icon: FiList },
+    { to: '/admin/hadiths', label: 'Manage Hadiths', icon: FiBookOpen },
+    { to: '/admin/quiz', label: 'Manage Quiz', icon: FiHelpCircle },
+    { to: '/admin/audio', label: 'Audio Hadiths', icon: FiMusic },
+    { to: '/admin/announcements', label: 'Announcements', icon: FiBell },
+    { to: '/admin/quotes', label: 'Islamic Quotes', icon: FiMessageSquare },
+    { to: '/admin/scholars', label: 'Scholars', icon: FiUser },
+    { to: '/admin/duas-admin', label: 'Dua Collection', icon: FiStar },
+    { to: '/admin/adhkar-admin', label: 'Adhkar', icon: FiRepeat },
+    { to: '/admin/organizations', label: 'Sadaqah Orgs', icon: FiHeart },
+    { to: '/admin/tags', label: 'Topic Tags', icon: FiTag },
   ];
 
   return (
@@ -78,12 +118,7 @@ export default function AdminDashboard() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <h2 className="text-base font-bold text-gray-700 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {[
-            { to: '/admin/slider', label: 'Manage Slider', icon: FiImage },
-            { to: '/admin/collections', label: 'Manage Collections', icon: FiList },
-            { to: '/admin/hadiths', label: 'Manage Hadiths', icon: FiBookOpen },
-            { to: '/admin/quiz', label: 'Manage Quiz', icon: FiHelpCircle },
-          ].map(({ to, label, icon: Icon }) => (
+          {quickActions.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}

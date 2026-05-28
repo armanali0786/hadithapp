@@ -1,31 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import QR_CODE_URL from '../assets/img/scanner.jpeg';
 
 const TRUST_NAME = "QADRI JAME MASJID TRUST";
 const UPI_ID = "abc@upi";
 
 const DonationModal = ({ isVisible, onClose }) => {
-  const [isHindi, setIsHindi] = useState(false);
-
   if (!isVisible) return null;
 
   const TEXT = {
-    title:        isHindi ? `सहयोग करें कादरी जामे मस्जिद ट्रस्ट`       : `SUPPORT ${TRUST_NAME}`,
-    subtitle:     isHindi ? "मस्जिद की देखभाल और सेवाओं के लिए आपका सहयोग ज़रूरी है।" : "Help us maintain and serve our community.",
-    upiScanTitle: isHindi ? "अपने UPI ऐप से स्कैन करके भुगतान करें"      : "Scan & Pay using your UPI App",
-    scanToDonate: isHindi ? "दान करने के लिए स्कैन करें"                   : "SCAN TO DONATE",
-    note:         isHindi ? "नोट: भुगतान के बाद कृपया स्क्रीनशॉट भेजें।"  : "Note: Please send screenshot after payment to confirm transaction.",
-    orDonate:     isHindi ? "या बैंक विवरण द्वारा दान करें"                : "OR Donate via Account Details",
-    accHolder:    isHindi ? "खाता धारक"     : "Account Holder",
-    beneficiary:  isHindi ? "लाभार्थी"      : "Beneficiary (Vice President)",
-    accNumber:    isHindi ? "खाता संख्या"   : "Account Number",
-    ifsc:         isHindi ? "IFSC कोड"      : "IFSC Code",
-    upi:          isHindi ? "UPI ID"         : "UPI ID",
-    fastNote:     isHindi ? "* UPI QR दान करने का सबसे तेज़ तरीका है।"    : "* UPI QR is the fastest method for donating.",
-    footer:       isHindi
-      ? `© ${new Date().getFullYear()} ${TRUST_NAME}. सर्वाधिकार सुरक्षित।`
-      : `© ${new Date().getFullYear()} ${TRUST_NAME}. All Rights Reserved.`,
-    langBtn: isHindi ? "English" : "हिंदी में देखें",
+    title:        `SUPPORT ${TRUST_NAME}`,
+    subtitle:     "Help us maintain and serve our community.",
+    upiScanTitle: "Scan & Pay using your UPI App",
+    scanToDonate: "SCAN TO DONATE",
+    note:         "Note: Please send screenshot after payment to confirm transaction.",
+    orDonate:     "OR Donate via Account Details",
+    accHolder:    "Account Holder",
+    beneficiary:  "Beneficiary (Vice President)",
+    accNumber:    "Account Number",
+    ifsc:         "IFSC Code",
+    upi:          "UPI ID",
+    fastNote:     "* UPI QR is the fastest method for donating.",
+    footer:       `© ${new Date().getFullYear()} ${TRUST_NAME}. All Rights Reserved.`,
   };
 
   return (
@@ -39,16 +34,6 @@ const DonationModal = ({ isVisible, onClose }) => {
         >
           ✕
         </button>
-
-        {/* Lang Toggle */}
-        <div className="absolute top-4 left-4 z-10">
-          <button
-            onClick={() => setIsHindi(!isHindi)}
-            className="px-3 py-1.5 bg-isl-green text-white text-xs font-semibold rounded-lg hover:bg-isl-green-light transition-colors duration-200"
-          >
-            {TEXT.langBtn}
-          </button>
-        </div>
 
         <div className="p-6 sm:p-8 pt-14">
           {/* Header */}

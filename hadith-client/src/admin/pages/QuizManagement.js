@@ -63,8 +63,17 @@ export default function QuizManagement() {
 
   const updateChoice = (idx, text) => {
     const choices = [...form.choices];
+    const oldText = choices[idx].text;
     choices[idx] = { ...choices[idx], text };
-    setForm({ ...form, choices });
+    // keep correctAnswer in sync when editing a selected choice text
+    if (form.type === 'single') {
+      const updated = form.correctAnswer === oldText ? text : form.correctAnswer;
+      setForm({ ...form, choices, correctAnswer: updated });
+    } else {
+      const selected = form.correctAnswer ? form.correctAnswer.split(',') : [];
+      const updated = selected.map(s => s === oldText ? text : s).join(',');
+      setForm({ ...form, choices, correctAnswer: updated });
+    }
   };
 
   const addChoice = () => {
@@ -75,8 +84,32 @@ export default function QuizManagement() {
   };
 
   const removeChoice = (idx) => {
+    const removed = form.choices[idx].text;
     const choices = form.choices.filter((_, i) => i !== idx);
-    setForm({ ...form, choices });
+    // remove from correctAnswer if it was selected
+    if (form.type === 'single') {
+      setForm({ ...form, choices, correctAnswer: form.correctAnswer === removed ? '' : form.correctAnswer });
+    } else {
+      const selected = form.correctAnswer ? form.correctAnswer.split(',').filter(s => s !== removed) : [];
+      setForm({ ...form, choices, correctAnswer: selected.join(',') });
+    }
+  };
+
+  const toggleCorrect = (text) => {
+    if (form.type === 'single') {
+      setForm({ ...form, correctAnswer: text });
+    } else {
+      const selected = form.correctAnswer ? form.correctAnswer.split(',').filter(Boolean) : [];
+      const exists = selected.includes(text);
+      const updated = exists ? selected.filter(s => s !== text) : [...selected, text];
+      setForm({ ...form, correctAnswer: updated.join(',') });
+    }
+  };
+
+  const isSelected = (text) => {
+    if (!text.trim()) return false;
+    if (form.type === 'single') return form.correctAnswer === text;
+    return form.correctAnswer ? form.correctAnswer.split(',').includes(text) : false;
   };
 
   const handleSubmit = async (e) => {
@@ -86,7 +119,7 @@ export default function QuizManagement() {
       return;
     }
     if (!form.correctAnswer.trim()) {
-      setError('Correct answer is required');
+      setError(form.type === 'single' ? 'Please select the correct answer' : 'Please select at least one correct answer');
       return;
     }
     setSaving(true);
@@ -191,7 +224,8 @@ export default function QuizManagement() {
                   {q.choices?.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                       {q.choices.map((c) => {
-                        const isCorrect = c.text === q.correctAnswer || String(c.id) === q.correctAnswer;
+                        const correctList = q.correctAnswer ? q.correctAnswer.split(',') : [];
+                        const isCorrect = correctList.includes(c.text) || String(c.id) === q.correctAnswer;
                         return (
                           <div
                             key={c.id}
@@ -270,7 +304,7 @@ export default function QuizManagement() {
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">Question Type</label>
                 <select
                   value={form.type}
-                  onChange={(e) => setForm({ ...form, type: e.target.value })}
+                  onChange={(e) => setForm({ ...form, type: e.target.value, correctAnswer: '' })}
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-isl-green/30 focus:border-isl-green bg-white"
                 >
                   <option value="single">Single Choice</option>
@@ -278,10 +312,17 @@ export default function QuizManagement() {
                 </select>
               </div>
 
-              {/* Choices */}
+              {/* Choices + correct answer selection */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-semibold text-gray-700">Answer Choices *</label>
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700">Answer Choices *</label>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {form.type === 'single'
+                        ? 'Click the circle to mark the correct answer'
+                        : 'Check all correct answers'}
+                    </p>
+                  </div>
                   <button
                     type="button"
                     onClick={addChoice}
@@ -291,39 +332,67 @@ export default function QuizManagement() {
                   </button>
                 </div>
                 <div className="space-y-2">
-                  {form.choices.map((c, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <span className="text-xs text-gray-400 font-mono w-5 text-center">{idx + 1}.</span>
-                      <input
-                        value={c.text}
-                        onChange={(e) => updateChoice(idx, e.target.value)}
-                        placeholder={`Choice ${idx + 1}...`}
-                        className="flex-1 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-isl-green/30 focus:border-isl-green"
-                      />
-                      {form.choices.length > 2 && (
+                  {form.choices.map((c, idx) => {
+                    const selected = isSelected(c.text);
+                    return (
+                      <div key={idx} className={`flex items-center gap-2 rounded-xl border transition-all duration-150 px-3 py-2 ${
+                        selected ? 'border-isl-green bg-green-50' : 'border-gray-200 bg-white'
+                      }`}>
+                        {/* Radio / Checkbox selector */}
                         <button
                           type="button"
-                          onClick={() => removeChoice(idx)}
-                          className="p-1.5 text-gray-400 hover:text-red-500 transition"
+                          onClick={() => c.text.trim() && toggleCorrect(c.text)}
+                          className="flex-shrink-0 focus:outline-none"
+                          title={form.type === 'single' ? 'Mark as correct answer' : 'Toggle correct answer'}
                         >
-                          <FiX size={14} />
+                          {form.type === 'single' ? (
+                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
+                              selected ? 'border-isl-green bg-isl-green' : 'border-gray-300'
+                            }`}>
+                              {selected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                            </div>
+                          ) : (
+                            <div className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors ${
+                              selected ? 'border-isl-green bg-isl-green' : 'border-gray-300'
+                            }`}>
+                              {selected && <FiCheck size={10} className="text-white" strokeWidth={3} />}
+                            </div>
+                          )}
                         </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Correct Answer *</label>
-                <input
-                  required
-                  value={form.correctAnswer}
-                  onChange={(e) => setForm({ ...form, correctAnswer: e.target.value })}
-                  placeholder="Must match exact text of the correct choice..."
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-isl-green/30 focus:border-isl-green"
-                />
-                <p className="mt-1 text-xs text-gray-400">Enter the exact text of the correct choice</p>
+                        <span className="text-xs text-gray-400 font-mono w-4 text-center flex-shrink-0">{idx + 1}.</span>
+
+                        <input
+                          value={c.text}
+                          onChange={(e) => updateChoice(idx, e.target.value)}
+                          placeholder={`Choice ${idx + 1}...`}
+                          className="flex-1 bg-transparent text-sm focus:outline-none text-gray-800 placeholder-gray-300"
+                        />
+
+                        {selected && (
+                          <span className="text-xs text-isl-green font-semibold flex-shrink-0">✓ Correct</span>
+                        )}
+
+                        {form.choices.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => removeChoice(idx)}
+                            className="p-1 text-gray-300 hover:text-red-500 transition flex-shrink-0"
+                          >
+                            <FiX size={13} />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Validation hint */}
+                {!form.correctAnswer && (
+                  <p className="mt-2 text-xs text-amber-500 flex items-center gap-1">
+                    ⚠ {form.type === 'single' ? 'Select one correct answer above' : 'Select at least one correct answer above'}
+                  </p>
+                )}
               </div>
 
               {error && <p className="text-red-500 text-sm">{error}</p>}

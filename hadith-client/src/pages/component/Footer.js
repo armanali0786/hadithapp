@@ -10,35 +10,38 @@ const bannerCells = [
   {
     Icon: FaBookOpen,
     title: "10+ Islamic Resources",
+    arabic: "مصادر إسلامية",
     desc: "Bringing people closer to Allah through authentic knowledge",
     to: "/hadith-list",
     linkText: "Explore Hadith",
-    bg: "bg-isl-green",
+    accent: "#c9a227",
   },
   {
     Icon: FaHandHoldingHeart,
     title: "Sadaqah Jariyah",
+    arabic: "صدقة جارية",
     desc: "Help us reach Muslims worldwide with the light of knowledge",
     to: "/donation",
     linkText: "Donate Now",
-    bg: "bg-isl-gold",
-    dark: true,
+    accent: "#e0b733",
   },
   {
     Icon: FaUsers,
     title: "Volunteer for the Ummah",
+    arabic: "تطوع للأمة",
     desc: "Got skills? Use them for the sake of Allah and the community",
     to: "#",
     linkText: "Get Involved",
-    bg: "bg-amber-800",
+    accent: "#c9a227",
   },
   {
     Icon: FaQuestionCircle,
     title: "Hadith Quiz",
+    arabic: "اختبر نفسك",
     desc: "Test your knowledge of the Prophet's ﷺ teachings",
     to: "/quiz",
     linkText: "Take the Quiz",
-    bg: "bg-isl-dark",
+    accent: "#e0b733",
   },
 ];
 
@@ -56,27 +59,52 @@ export default function Footer() {
   return (
     <footer className="bg-isl-dark">
 
-      {/* Top 2×2 Banner Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4">
-        {bannerCells.map(({ Icon, title, desc, to, linkText, bg, dark }) => (
-          <div key={title} className={`${bg} p-6 flex flex-col items-start gap-3`}>
-            <Icon className={`text-2xl ${dark ? 'text-isl-green' : 'text-white/90'}`} />
-            <h2 className={`font-bold text-sm leading-tight font-body ${dark ? 'text-isl-green' : 'text-white'}`}>
-              {title}
-            </h2>
-            <p className={`text-xs font-body leading-relaxed flex-1 ${dark ? 'text-isl-green/80' : 'text-white/70'}`}>
-              {desc}
-            </p>
+      {/* Feature Banner */}
+      <div className="relative overflow-hidden bg-isl-green-dark border-b border-isl-gold/20">
+        {/* Subtle geometric overlay */}
+        <div className="absolute inset-0 geometric-bg opacity-30 pointer-events-none" />
+
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+          {bannerCells.map(({ Icon, title, arabic, desc, to, linkText, accent }) => (
             <NavLink
+              key={title}
               to={to}
-              className={`flex items-center gap-1.5 text-xs font-semibold mt-1 group no-underline ${
-                dark ? '!text-isl-green hover:!text-isl-dark' : '!text-white hover:text-gray-200'
-              }`}
+              className="group flex flex-col gap-3 px-7 py-8 no-underline hover:bg-white/5 transition-all duration-300"
             >
-              {linkText} <FaArrowRight className="text-[9px] group-hover:translate-x-0.5 transition-transform" />
+              {/* Icon circle */}
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 mb-1 transition-transform duration-300 group-hover:scale-110"
+                style={{ background: `${accent}1a`, border: `1.5px solid ${accent}55` }}
+              >
+                <Icon style={{ color: accent, fontSize: '1.1rem' }} />
+              </div>
+
+              {/* Arabic subtitle */}
+              <div className="font-arabic text-sm leading-none" style={{ color: `${accent}99` }}>
+                {arabic}
+              </div>
+
+              {/* Title */}
+              <h3 className="font-body font-bold text-white text-sm leading-snug">
+                {title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-white/50 text-xs font-body leading-relaxed flex-1">
+                {desc}
+              </p>
+
+              {/* Link */}
+              <div className="flex items-center gap-1.5 text-xs font-semibold mt-1 transition-colors duration-200"
+                style={{ color: accent }}>
+                {linkText}
+                <FaArrowRight
+                  className="text-[9px] transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </div>
             </NavLink>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Main Footer Grid */}

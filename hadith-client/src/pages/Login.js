@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -19,6 +20,20 @@ export default function Login() {
     setLoading(true);
     try {
       const user = await login(form.email, form.password);
+      if (user.isAdmin) navigate('/admin');
+      else navigate('/');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+    try {
+      const user = await googleLogin(credentialResponse.credential);
       if (user.isAdmin) navigate('/admin');
       else navigate('/');
     } catch (err) {
@@ -49,6 +64,28 @@ export default function Login() {
                 {error}
               </div>
             )}
+
+            {/* Google Sign-In */}
+            <div className="flex justify-center mb-5">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => setError('Google sign-in failed. Please try again.')}
+                useOneTap={false}
+                shape="rectangular"
+                theme="outline"
+                size="large"
+                width="340"
+                text="signin_with"
+              />
+            </div>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="flex-1 h-px bg-gray-200" />
+              <span className="text-xs text-gray-400 font-body">or sign in with email</span>
+              <div className="flex-1 h-px bg-gray-200" />
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-600 mb-1.5 font-body">Email Address</label>
