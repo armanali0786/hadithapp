@@ -252,7 +252,7 @@ function DailyReminder() {
 
   useEffect(() => {
     axios.get(`${API}/islamic-quotes/random`)
-      .then(res => setQuote(res.data?.quote || res.data || null))
+      .then(res => setQuote(res.data?.data?.quote || res.data?.data?.quotes?.[0] || res.data?.quote || null))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -303,7 +303,7 @@ function AudioHadithsSection() {
   useEffect(() => {
     axios.get(`${API}/audio-hadiths?active=true`)
       .then(res => {
-        const list = res.data?.audioHadiths || res.data || [];
+        const list = res.data?.data?.audioHadiths || res.data?.audioHadiths || [];
         setAudios(Array.isArray(list) ? list : []);
       })
       .catch(() => {})
@@ -388,7 +388,7 @@ function QuotesCarousel() {
   useEffect(() => {
     axios.get(`${API}/islamic-quotes?active=true`)
       .then(res => {
-        const list = res.data?.quotes || res.data || [];
+        const list = res.data?.data?.quotes || res.data?.quotes || [];
         setQuotes(Array.isArray(list) ? list : []);
       })
       .catch(() => {})
@@ -469,7 +469,7 @@ function AnnouncementsSection() {
   useEffect(() => {
     axios.get(`${API}/announcements?active=true`)
       .then(res => {
-        const list = res.data?.announcements || res.data || [];
+        const list = res.data?.data?.announcements || res.data?.announcements || [];
         setItems(Array.isArray(list) ? list.slice(0, 4) : []);
       })
       .catch(() => {})
@@ -544,7 +544,7 @@ function ScholarSection() {
   useEffect(() => {
     axios.get(`${API}/scholars?active=true`)
       .then(res => {
-        const list = res.data?.scholars || res.data || [];
+        const list = res.data?.data?.scholars || res.data?.scholars || [];
         setScholars(Array.isArray(list) ? list.slice(0, 3) : []);
       })
       .catch(() => {})
