@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { GoogleLogin } from '@react-oauth/google';
@@ -12,6 +12,17 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const googleBtnRef = useRef(null);
+  const [googleBtnWidth, setGoogleBtnWidth] = useState(340);
+
+  useEffect(() => {
+    const update = () => {
+      if (googleBtnRef.current) setGoogleBtnWidth(googleBtnRef.current.offsetWidth);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -67,7 +78,7 @@ export default function Login() {
             )}
 
             {/* Google Sign-In */}
-            <div className="flex justify-center mb-5">
+            <div ref={googleBtnRef} className="w-full mb-5 overflow-hidden">
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => setError('Google sign-in failed. Please try again.')}
@@ -75,7 +86,7 @@ export default function Login() {
                 shape="rectangular"
                 theme="outline"
                 size="large"
-                width="340"
+                width={googleBtnWidth}
                 text="signin_with"
               />
             </div>

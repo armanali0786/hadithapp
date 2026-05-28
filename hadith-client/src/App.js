@@ -40,6 +40,11 @@ import AudioHadithsPage from './pages/AudioHadithsPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import IslamicQuotesPage from './pages/IslamicQuotesPage';
 import ScholarsPage from './pages/ScholarsPage';
+import AboutPage from './pages/AboutPage';
+import VolunteerPage from './pages/VolunteerPage';
+import ContactPage from './pages/ContactPage';
+import HelpPage from './pages/HelpPage';
+import PrivacyPage from './pages/PrivacyPage';
 
 // User layout wrapper (includes Navbar)
 function UserLayout() {
@@ -101,6 +106,11 @@ function App() {
           <Route path="/announcements" element={<AnnouncementsPage />} />
           <Route path="/quotes" element={<IslamicQuotesPage />} />
           <Route path="/scholars" element={<ScholarsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/volunteer" element={<VolunteerPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/help" element={<HelpPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
         </Route>
       </Routes>
     </div>

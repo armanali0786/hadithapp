@@ -53,7 +53,13 @@ const quickLinks = [
   { to: '/donation-list', label: 'Donor List' },
 ];
 
-const resources = ['About Us', 'Volunteer', 'Contact Us', 'Help & Support', 'Privacy Policy'];
+const resources = [
+  { label: 'About Us',       to: '/about' },
+  { label: 'Volunteer',      to: '/volunteer' },
+  { label: 'Contact Us',     to: '/contact' },
+  { label: 'Help & Support', to: '/help' },
+  { label: 'Privacy Policy', to: '/privacy' },
+];
 
 export default function Footer() {
   return (
@@ -164,14 +170,14 @@ export default function Footer() {
           <div className="space-y-3">
             <h4 className="text-white font-semibold text-sm tracking-wider font-body uppercase">Resources</h4>
             <ul className="space-y-2">
-              {resources.map((item) => (
-                <li key={item}>
-                  <button
-                    type="button"
-                    className="!text-gray-400 hover:!text-isl-gold text-xs font-body transition-colors duration-200 cursor-pointer text-left no-underline"
+              {resources.map(({ label, to }) => (
+                <li key={to}>
+                  <NavLink
+                    to={to}
+                    className="!text-gray-400 hover:!text-isl-gold text-xs font-body transition-colors duration-200 no-underline"
                   >
-                    {item}
-                  </button>
+                    {label}
+                  </NavLink>
                 </li>
               ))}
             </ul>
