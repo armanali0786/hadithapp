@@ -22,7 +22,7 @@ const defaultForm = {
   arabicTitle: '',
   arabicText: '',
   transliteration: '',
-  translations: { english: '', urdu: '', bengali: '' },
+  translations: { english: '', urdu: '' },
   reference: '',
   category: 'general',
   isActive: true,
@@ -69,7 +69,6 @@ export default function DuaManagement() {
       translations: {
         english: item.translations?.english || '',
         urdu: item.translations?.urdu || '',
-        bengali: item.translations?.bengali || '',
       },
       reference: item.reference || '',
       category: item.category || 'general',
@@ -286,17 +285,6 @@ export default function DuaManagement() {
                   dir="rtl"
                   rows={2}
                   placeholder="اردو ترجمہ..."
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-isl-green/30 focus:border-isl-green resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Bengali Translation</label>
-                <textarea
-                  value={form.translations.bengali}
-                  onChange={(e) => handleTranslationChange('bengali', e.target.value)}
-                  rows={2}
-                  placeholder="বাংলা অনুবাদ..."
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-isl-green/30 focus:border-isl-green resize-none"
                 />
               </div>
