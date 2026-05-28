@@ -11,6 +11,7 @@ const defaultForm = {
   scholarTitle: '',
   recommendationText: '',
   arabicQuote: '',
+  imageUrl: '',
   isFeatured: false,
   isActive: true,
   order: 0,
@@ -32,7 +33,7 @@ export default function ScholarManagement() {
     setLoading(true);
     try {
       const res = await axios.get(`${API}/scholars`);
-      const data = res.data?.scholars || res.data?.data || res.data || [];
+      const data = res.data?.data?.scholars || res.data?.scholars || res.data?.data || res.data || [];
       setItems(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);
@@ -55,6 +56,7 @@ export default function ScholarManagement() {
       scholarTitle: item.scholarTitle || '',
       recommendationText: item.recommendationText || '',
       arabicQuote: item.arabicQuote || '',
+      imageUrl: item.scholarImage?.startsWith('http') ? item.scholarImage : '',
       isFeatured: item.isFeatured || false,
       isActive: item.isActive !== undefined ? item.isActive : true,
       order: item.order || 0,
@@ -76,9 +78,14 @@ export default function ScholarManagement() {
     try {
       const fd = new FormData();
       Object.keys(form).forEach(k => {
+        if (k === 'imageUrl') return;
         if (form[k] !== undefined && form[k] !== null && form[k] !== '') fd.append(k, form[k]);
       });
-      if (imageFile) fd.append('scholarImage', imageFile);
+      if (imageFile) {
+        fd.append('scholarImage', imageFile);
+      } else if (form.imageUrl.trim()) {
+        fd.append('imageUrl', form.imageUrl.trim());
+      }
 
       if (editing) {
         await axios.put(`${API}/scholars/${editing._id}`, fd, {
@@ -269,13 +276,22 @@ export default function ScholarManagement() {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  Scholar Image {editing ? '(leave empty to keep existing)' : '(optional)'}
+                  Scholar Image URL <span className="text-gray-400 font-normal">(optional — paste image link)</span>
                 </label>
+                <input
+                  type="url"
+                  name="imageUrl"
+                  value={form.imageUrl}
+                  onChange={handleChange}
+                  placeholder="https://example.com/scholar.jpg"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-isl-green/30 focus:border-isl-green"
+                />
+                <p className="text-xs text-gray-400 mt-1">Or upload a file below (file takes priority over URL)</p>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => setImageFile(e.target.files[0] || null)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-isl-green/10 file:text-isl-green"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-isl-green/10 file:text-isl-green mt-2"
                 />
               </div>
 

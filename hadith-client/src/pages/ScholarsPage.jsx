@@ -27,7 +27,7 @@ export default function ScholarsPage() {
   useEffect(() => {
     axios.get(`${API}/scholars?active=true`)
       .then(res => {
-        const data = res.data?.scholars || res.data?.data || res.data || [];
+        const data = res.data?.data?.scholars || res.data?.scholars || res.data?.data || res.data || [];
         setItems(Array.isArray(data) ? data : []);
       })
       .catch(() => setError('Failed to load scholars. Please try again later.'))
@@ -104,9 +104,9 @@ export default function ScholarsPage() {
                   <div className="flex items-start gap-4">
                     {/* Avatar */}
                     <div className="flex-shrink-0">
-                      {item.imageUrl ? (
+                      {item.scholarImage ? (
                         <img
-                          src={item.imageUrl.startsWith('http') ? item.imageUrl : `${API}/${item.imageUrl}`}
+                          src={item.scholarImage.startsWith('http') ? item.scholarImage : `${API}/${item.scholarImage}`}
                           alt={item.scholarName}
                           className="w-16 h-16 rounded-full object-cover border-2 border-isl-gold/30"
                         />

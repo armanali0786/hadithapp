@@ -1,14 +1,19 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const ScholarRecommendation = require('../models/ScholarRecommendation');
 
 const router = express.Router();
 
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
 // Multer config for scholar images
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
+  destination: (req, file, cb) => cb(null, uploadsDir),
   filename: (req, file, cb) => {
     const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
     cb(null, unique + path.extname(file.originalname));
@@ -56,10 +61,12 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST create scholar (admin only)
-router.post('/', adminAuth, upload.single('image'), async (req, res) => {
+router.post('/', adminAuth, upload.single('scholarImage'), async (req, res) => {
   try {
-    const { scholarName, scholarTitle, recommendationText, arabicQuote, isActive, isFeatured, order } = req.body;
-    const scholarImage = req.file ? `uploads/${req.file.filename}` : undefined;
+    const { scholarName, scholarTitle, recommendationText, arabicQuote, isActive, isFeatured, order, imageUrl } = req.body;
+    let scholarImage;
+    if (req.file) scholarImage = `uploads/${req.file.filename}`;
+    else if (imageUrl && imageUrl.trim()) scholarImage = imageUrl.trim();
     const scholar = await ScholarRecommendation.create({
       scholarName, scholarTitle, scholarImage, recommendationText, arabicQuote, isActive, isFeatured, order
     });
@@ -70,10 +77,12 @@ router.post('/', adminAuth, upload.single('image'), async (req, res) => {
 });
 
 // PUT update scholar (admin only)
-router.put('/:id', adminAuth, upload.single('image'), async (req, res) => {
+router.put('/:id', adminAuth, upload.single('scholarImage'), async (req, res) => {
   try {
     const updates = { ...req.body };
+    delete updates.imageUrl;
     if (req.file) updates.scholarImage = `uploads/${req.file.filename}`;
+    else if (req.body.imageUrl && req.body.imageUrl.trim()) updates.scholarImage = req.body.imageUrl.trim();
     const scholar = await ScholarRecommendation.findByIdAndUpdate(req.params.id, updates, { new: true, runValidators: true });
     if (!scholar) return res.status(404).json({ status: 'fail', message: 'Scholar not found' });
     res.json({ status: 'success', data: { scholar } });
