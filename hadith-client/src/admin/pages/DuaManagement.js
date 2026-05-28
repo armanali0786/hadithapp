@@ -44,7 +44,7 @@ export default function DuaManagement() {
     setLoading(true);
     try {
       const res = await axios.get(`${API}/duas`);
-      const data = res.data?.duas || res.data?.data || res.data || [];
+      const data = res.data?.data?.duas || res.data?.duas || res.data?.data || res.data || [];
       setItems(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);

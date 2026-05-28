@@ -37,7 +37,7 @@ export default function DuaPage() {
     setLoading(true);
     axios.get(`${API}/duas?active=true`)
       .then(res => {
-        const data = res.data?.data || res.data || [];
+        const data = res.data?.data?.duas || res.data?.duas || res.data?.data || res.data || [];
         setDuas(Array.isArray(data) ? data : []);
       })
       .catch(() => setError('Failed to load duas. Please try again later.'))

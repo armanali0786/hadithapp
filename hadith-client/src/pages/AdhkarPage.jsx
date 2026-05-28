@@ -109,7 +109,7 @@ export default function AdhkarPage() {
     setLoading(true);
     axios.get(`${API}/adhkar?active=true`)
       .then(res => {
-        const data = res.data?.data || res.data || [];
+        const data = res.data?.data?.adhkar || res.data?.adhkar || res.data?.data || res.data || [];
         setAdhkar(Array.isArray(data) ? data : []);
       })
       .catch(() => setError('Failed to load adhkar. Please try again later.'))

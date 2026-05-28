@@ -38,7 +38,7 @@ export default function AdhkarManagement() {
     setLoading(true);
     try {
       const res = await axios.get(`${API}/adhkar`);
-      const data = res.data?.adhkar || res.data?.data || res.data || [];
+      const data = res.data?.data?.adhkar || res.data?.adhkar || res.data?.data || res.data || [];
       setItems(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);
