@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FaSignOutAlt, FaUserCircle, FaShieldAlt } from 'react-icons/fa';
 import { FiSearch, FiChevronDown, FiChevronUp, FiX, FiMenu, FiBookOpen, FiMic, FiMessageSquare, FiBell, FiUser, FiBookmark, FiHelpCircle } from 'react-icons/fi';
@@ -35,6 +35,22 @@ export default function Navbar() {
   const closeTimer = useRef(null);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Auto-expand the mobile accordion section whose child is the current page
+  useEffect(() => {
+    NAV.forEach(item => {
+      if (item.children) {
+        const hasActive = item.children.some(child => location.pathname === child.to);
+        if (hasActive) {
+          setMobileExpanded(prev => ({ ...prev, [item.label]: true }));
+        }
+      }
+    });
+  }, [location.pathname]);
+
+  const isGroupActive = (children) =>
+    children.some(child => location.pathname === child.to || location.pathname.startsWith(child.to + '/'));
 
   const handleLogout = () => {
     logout();
@@ -87,17 +103,20 @@ export default function Navbar() {
                   onMouseEnter={() => openDropdown(item.label)}
                   onMouseLeave={scheduleClose}
                 >
+                  {/* Parent button — gold when a child is the current page */}
                   <button
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      activeDropdown === item.label
-                        ? 'text-isl-gold bg-white/10'
-                        : 'text-white hover:text-isl-gold hover:bg-white/10'
+                      isGroupActive(item.children)
+                        ? 'text-isl-gold font-semibold bg-white/10'
+                        : activeDropdown === item.label
+                          ? 'text-isl-gold bg-white/10'
+                          : 'text-white hover:text-isl-gold hover:bg-white/10'
                     }`}
                   >
                     {item.label}
                     {activeDropdown === item.label
                       ? <FiChevronUp size={13} />
-                      : <FiChevronDown size={13} />}
+                      : <FiChevronDown size={13} className={isGroupActive(item.children) ? 'text-isl-gold' : ''} />}
                   </button>
 
                   {/* Dropdown Panel */}
@@ -117,22 +136,31 @@ export default function Navbar() {
                               to={child.to}
                               onClick={() => setActiveDropdown(null)}
                               className={({ isActive }) =>
-                                `flex items-start gap-3 px-4 py-3 transition-colors duration-150 no-underline group ${
-                                  isActive ? 'bg-isl-green/5' : 'hover:bg-gray-50'
+                                `flex items-start gap-3 px-4 py-3 transition-colors duration-150 no-underline group border-l-2 ${
+                                  isActive
+                                    ? 'bg-isl-green/10 border-isl-green'
+                                    : 'border-transparent hover:bg-gray-50 hover:border-isl-green/30'
                                 }`
                               }
                             >
-                              <span className="mt-0.5 text-isl-green/60 group-hover:text-isl-green transition-colors flex-shrink-0">
-                                {child.icon}
-                              </span>
-                              <div>
-                                <div className="text-sm font-semibold text-gray-800 group-hover:text-isl-green transition-colors">
-                                  {child.label}
-                                </div>
-                                {child.desc && (
-                                  <div className="text-xs text-gray-400 mt-0.5">{child.desc}</div>
-                                )}
-                              </div>
+                              {({ isActive }) => (
+                                <>
+                                  <span className={`mt-0.5 flex-shrink-0 transition-colors ${isActive ? 'text-isl-green' : 'text-isl-green/60 group-hover:text-isl-green'}`}>
+                                    {child.icon}
+                                  </span>
+                                  <div>
+                                    <div className={`text-sm font-semibold transition-colors ${isActive ? 'text-isl-green' : 'text-gray-800 group-hover:text-isl-green'}`}>
+                                      {child.label}
+                                    </div>
+                                    {child.desc && (
+                                      <div className={`text-xs mt-0.5 ${isActive ? 'text-isl-green/60' : 'text-gray-400'}`}>{child.desc}</div>
+                                    )}
+                                  </div>
+                                  {isActive && (
+                                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-isl-green mt-1.5 flex-shrink-0" />
+                                  )}
+                                </>
+                              )}
                             </NavLink>
                           </li>
                         ))}
@@ -262,15 +290,19 @@ export default function Navbar() {
           {NAV.map((item) =>
             item.children ? (
               <div key={item.label} className="mb-1">
-                {/* Section header (accordion toggle) */}
+                {/* Section header — gold when a child is the current page */}
                 <button
                   onClick={() => toggleMobileSection(item.label)}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors duration-150 text-white hover:bg-white/10"
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors duration-150 ${
+                    isGroupActive(item.children)
+                      ? 'text-isl-gold bg-white/10'
+                      : 'text-white hover:bg-white/10'
+                  }`}
                 >
                   <span>{item.label}</span>
                   {mobileExpanded[item.label]
                     ? <FiChevronUp size={16} className="text-isl-gold" />
-                    : <FiChevronDown size={16} className="text-white/60" />}
+                    : <FiChevronDown size={16} className={isGroupActive(item.children) ? 'text-isl-gold' : 'text-white/60'} />}
                 </button>
 
                 {/* Accordion children */}
