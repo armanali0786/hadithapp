@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
+
 export default function useHadiths() {
   const [hadithTypes, setHadithTypes] = useState([]);
   const [hadithList, setHadithList] = useState([]);
@@ -9,13 +11,13 @@ export default function useHadiths() {
   const [error, setError] = useState(null);
 
   const fetchHadithTypes = async () => {
-    const response = await axios.get("http://localhost:4040/hadith-type");
+    const response = await axios.get(`${API}/hadith-type`);
     const allType = { _id: "all", hadithtype: "All" };
     setHadithTypes([allType, ...response.data.hadithType]);
   };
 
   const fetchAllHadiths = async () => {
-    const response = await axios.get("http://localhost:4040/hadith-list");
+    const response = await axios.get(`${API}/hadith-list`);
     setHadithList(response.data.data.hadithlist);
   };
 
@@ -26,7 +28,7 @@ export default function useHadiths() {
         await fetchAllHadiths();
       } else {
         const response = await axios.get(
-          `http://localhost:4040/hadith-list/filter?hadithTypeId=${typeId}`
+          `${API}/hadith-list/filter?hadithTypeId=${typeId}`
         );
         setHadithList(response.data.data.hadithList);
       }

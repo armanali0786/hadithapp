@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import staticSlides from '../data/SliderDb';
 import { SliderSkeleton } from '../components/Skeletons';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 const getFirstNWords = (text, n) => text.split(" ").slice(0, n).join(" ");
 const removeHtmlTags = (html) =>

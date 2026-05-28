@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FaSignOutAlt, FaUserCircle, FaShieldAlt } from 'react-icons/fa';
 import { FiSearch, FiChevronDown, FiChevronUp, FiX, FiMenu, FiBookOpen, FiMic, FiMessageSquare, FiBell, FiUser, FiBookmark, FiHelpCircle } from 'react-icons/fi';
+import logoImg from '../assets/logo/ilmhadith.png';
 
 const NAV = [
   { label: 'Home', to: '/' },
@@ -67,8 +68,8 @@ export default function Navbar() {
 
           {/* Brand */}
           <NavLink to="/" className="flex items-center gap-3 no-underline flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-isl-gold/20 border-2 border-isl-gold flex items-center justify-center text-isl-gold font-arabic text-lg select-none">
-              ☪
+            <div className="w-10 h-10 rounded-full bg-isl-gold/20 border-2 border-isl-gold flex items-center justify-center overflow-hidden">
+              <img src={logoImg} alt="IlmHadith" className="w-full h-full object-contain p-1" />
             </div>
             <div>
               <div className="text-white font-bold text-lg font-body leading-none">IlmHadith</div>
@@ -237,7 +238,9 @@ export default function Navbar() {
         {/* Sidebar Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-isl-gold/20 border border-isl-gold flex items-center justify-center text-isl-gold font-arabic text-base">☪</div>
+            <div className="w-8 h-8 rounded-full bg-isl-gold/20 border border-isl-gold flex items-center justify-center overflow-hidden">
+              <img src={logoImg} alt="IlmHadith" className="w-full h-full object-contain p-0.5" />
+            </div>
             <span className="text-white font-bold text-base">IlmHadith</span>
           </div>
           <button

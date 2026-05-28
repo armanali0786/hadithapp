@@ -1,4 +1,5 @@
 import React from 'react';
+import logoImg from '../assets/logo/ilmhadith.png';
 
 // ─── Base Skeleton pulse block ────────────────────────────────────────────────
 export function Skeleton({ className = '' }) {
@@ -103,8 +104,8 @@ export function PageLoader({ label = 'Loading...' }) {
       <div className="relative w-16 h-16">
         <div className="absolute inset-0 rounded-full border-4 border-isl-gold/20" />
         <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-isl-gold animate-spin" />
-        <div className="absolute inset-0 flex items-center justify-center font-arabic text-isl-gold text-xl">
-          ☪
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img src={logoImg} alt="IlmHadith" className="w-8 h-8 object-contain" />
         </div>
       </div>
       <p className="text-isl-green font-body text-sm font-medium tracking-wider">{label}</p>

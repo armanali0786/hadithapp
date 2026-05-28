@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FiMessageSquare } from 'react-icons/fi';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 const CATEGORY_STYLES = {
   general:  'bg-gray-100 text-gray-600 border border-gray-200',

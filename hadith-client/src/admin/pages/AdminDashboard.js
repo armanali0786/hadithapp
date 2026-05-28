@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({

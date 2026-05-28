@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiMapPin, FiStar, FiCopy, FiCheck, FiX } from 'react-icons/fi';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 const TYPE_LABELS = { mosque: 'Mosque', madrasa: 'Madrasa', foundation: 'Foundation' };
 const TYPE_COLORS = {

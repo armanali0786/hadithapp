@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiSearch, FiCheck } from 'react-icons/fi';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 const emptyChoice = { id: Date.now(), text: '' };
 

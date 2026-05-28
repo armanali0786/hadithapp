@@ -4,7 +4,7 @@ import axios from 'axios';
 import { FaBookmark } from 'react-icons/fa';
 import { FiBookmark, FiTrash2, FiArrowRight } from 'react-icons/fi';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 function SkeletonCard() {
   return (

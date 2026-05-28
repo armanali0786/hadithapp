@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fi';
 import { FaQuoteLeft, FaMosque, FaHandHoldingHeart } from 'react-icons/fa';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 const HOME_SCHEMA = [{
   "@context": "https://schema.org",

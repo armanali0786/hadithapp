@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaMosque } from 'react-icons/fa';
 import { FiArrowRight } from 'react-icons/fi';
 
-const API = 'http://localhost:4040';
+const API = process.env.REACT_APP_API_URL || 'http://localhost:4040';
 
 const GRADE_COLORS = {
   sahih:   'bg-emerald-100 text-emerald-700',

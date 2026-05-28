@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import logoImg from '../assets/logo/ilmhadith.png';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -39,8 +40,8 @@ export default function AdminLogin() {
 
           {/* Header */}
           <div className="px-8 pt-10 pb-8 text-center border-b border-white/10">
-            <div className="w-16 h-16 rounded-full bg-isl-gold/10 border-2 border-isl-gold flex items-center justify-center mx-auto mb-4">
-              <span className="text-isl-gold font-arabic text-2xl">☪</span>
+            <div className="w-16 h-16 rounded-full bg-isl-gold/10 border-2 border-isl-gold flex items-center justify-center mx-auto mb-4 overflow-hidden">
+              <img src={logoImg} alt="IlmHadith" className="w-full h-full object-contain p-2" />
             </div>
             <h1 className="text-white font-bold text-2xl font-body">Admin Panel</h1>
             <p className="text-gray-400 text-sm font-body mt-1">IlmHadith — Content Management</p>

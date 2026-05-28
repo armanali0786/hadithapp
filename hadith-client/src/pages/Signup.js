@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
+import logoImg from '../assets/logo/ilmhadith.png';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -52,8 +53,8 @@ export default function SignUp() {
 
           {/* Header */}
           <div className="bg-isl-green px-8 pt-10 pb-8 text-center">
-            <div className="w-16 h-16 rounded-full bg-isl-gold/20 border-2 border-isl-gold flex items-center justify-center mx-auto mb-4">
-              <span className="text-isl-gold font-arabic text-2xl">☪</span>
+            <div className="w-16 h-16 rounded-full bg-isl-gold/20 border-2 border-isl-gold flex items-center justify-center mx-auto mb-4 overflow-hidden">
+              <img src={logoImg} alt="IlmHadith" className="w-full h-full object-contain p-2" />
             </div>
             <h1 className="text-white font-bold text-2xl font-body">Create Account</h1>
             <p className="text-gray-300 text-sm font-body mt-1">Join the IlmHadith community</p>
