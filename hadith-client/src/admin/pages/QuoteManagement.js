@@ -39,7 +39,7 @@ export default function QuoteManagement() {
     setLoading(true);
     try {
       const res = await axios.get(`${API}/islamic-quotes`);
-      const data = res.data?.quotes || res.data?.data || res.data || [];
+      const data = res.data?.data?.quotes || res.data?.quotes || res.data?.data || res.data || [];
       setItems(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error(e);

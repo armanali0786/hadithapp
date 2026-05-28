@@ -34,7 +34,7 @@ export default function IslamicQuotesPage() {
   useEffect(() => {
     axios.get(`${API}/islamic-quotes?active=true`)
       .then(res => {
-        const data = res.data?.quotes || res.data?.data || res.data || [];
+        const data = res.data?.data?.quotes || res.data?.quotes || res.data?.data || res.data || [];
         setItems(Array.isArray(data) ? data : []);
       })
       .catch(() => setError('Failed to load quotes. Please try again later.'))
