@@ -64,10 +64,15 @@ function AdhkarCard({ item }) {
           </div>
         )}
 
+        {/* Title */}
+        {item.title && (
+          <h3 className="text-sm font-bold text-gray-800 mb-3">{item.title}</h3>
+        )}
+
         {/* Arabic */}
-        {item.arabic && (
+        {item.arabicText && (
           <p className="font-arabic text-2xl text-gray-800 text-right dir-rtl leading-loose mb-4">
-            {item.arabic}
+            {item.arabicText}
           </p>
         )}
 
@@ -78,10 +83,17 @@ function AdhkarCard({ item }) {
           </p>
         )}
 
-        {/* Translation */}
-        {item.translation && (
-          <p className="text-sm text-gray-700 leading-relaxed mb-3">
-            {item.translation}
+        {/* English translation */}
+        {item.translations?.english && (
+          <p className="text-sm text-gray-700 leading-relaxed mb-2">
+            {item.translations.english}
+          </p>
+        )}
+
+        {/* Urdu translation */}
+        {item.translations?.urdu && (
+          <p className="font-arabic text-sm text-gray-600 text-right dir-rtl leading-relaxed mb-3">
+            {item.translations.urdu}
           </p>
         )}
 

@@ -113,19 +113,27 @@ export default function DuaPage() {
                 className="bg-white rounded-2xl border-l-4 border-isl-gold shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
               >
                 <div className="p-6">
-                  {/* Category badge */}
-                  {dua.category && (
-                    <div className="flex justify-end mb-3">
-                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[dua.category] || CATEGORY_COLORS.Other}`}>
+                  {/* Title row + category badge */}
+                  <div className="flex items-start justify-between gap-2 mb-3">
+                    <div>
+                      {dua.title && (
+                        <h3 className="text-sm font-bold text-gray-800 leading-snug">{dua.title}</h3>
+                      )}
+                      {dua.arabicTitle && (
+                        <p className="font-arabic text-base text-isl-gold mt-0.5 dir-rtl">{dua.arabicTitle}</p>
+                      )}
+                    </div>
+                    {dua.category && (
+                      <span className={`flex-shrink-0 px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${CATEGORY_COLORS[dua.category] || CATEGORY_COLORS.Other}`}>
                         {dua.category}
                       </span>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
                   {/* Arabic text */}
-                  {dua.arabic && (
+                  {dua.arabicText && (
                     <p className="font-arabic text-2xl text-gray-800 text-right dir-rtl leading-loose mb-4">
-                      {dua.arabic}
+                      {dua.arabicText}
                     </p>
                   )}
 
@@ -137,9 +145,16 @@ export default function DuaPage() {
                   )}
 
                   {/* English translation */}
-                  {dua.translation && (
-                    <p className="text-sm text-gray-700 leading-relaxed mb-4">
-                      {dua.translation}
+                  {dua.translations?.english && (
+                    <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                      {dua.translations.english}
+                    </p>
+                  )}
+
+                  {/* Urdu translation */}
+                  {dua.translations?.urdu && (
+                    <p className="font-arabic text-sm text-gray-600 text-right dir-rtl leading-relaxed mb-3">
+                      {dua.translations.urdu}
                     </p>
                   )}
 
